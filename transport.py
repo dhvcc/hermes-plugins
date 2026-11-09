@@ -7,6 +7,7 @@ would leave the reasoning stamped with the wrong model.
 from __future__ import annotations
 
 import logging
+import os
 
 from . import hermes_api
 
@@ -15,6 +16,8 @@ API_MODE = "codex_responses"
 
 
 def install_transport(ctx, router) -> type:
+    if os.environ.get("HERMES_PLUGIN_HOST_PROCESS") == "1":
+        raise RuntimeError("needs plugins.isolation: in_process; a plugin host cannot reach Hermes's transport")
     from agent.transports import get_transport, register_transport
     from agent.transports.codex import ResponsesApiTransport
     from hermes_constants import get_hermes_home

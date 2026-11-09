@@ -35,6 +35,12 @@ If anything goes wrong, Hermes behaves as if the plugin weren't installed. The p
 - A rate-limited or missing model is skipped for a while.
 - If the Decisions API fails, routing pauses for 5 minutes. A rejected key turns routing off until restart.
 
+## Privacy and requirements
+
+- Each user turn sends the new message and up to six recent user and assistant messages (text only; earlier messages cut to 2,000 characters, the new one to 4,000) to `api.openai.com/v1/decisions`, using your OpenAI API key. Tool output and files are not sent.
+- The plugin makes no other network calls, writes no files, stores no credentials and sends no telemetry. Decisions are logged to Hermes's `agent.log` without message text.
+- The model is swapped by a subclass of Hermes's Responses transport, registered through `agent.transports.register_transport`. This needs the default `plugins.isolation: in_process`; under `host` isolation the plugin refuses to load and Hermes runs normally.
+
 ## Settings
 
 All optional, in `config.yaml`:

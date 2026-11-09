@@ -127,6 +127,10 @@ class TransportTests(unittest.TestCase):
         self.turn()
         self.assertEqual(self.build()["model"], SOL)
 
+    def test_refuses_to_run_in_a_plugin_host(self):
+        with patch.dict(os.environ, {"HERMES_PLUGIN_HOST_PROCESS": "1"}), self.assertRaises(RuntimeError):
+            install_transport(Context(), Router(Settings(), classify=fake_classify))
+
     def test_refuses_mismatched_context_windows_and_foreign_transport(self):
         current = type(get_transport("codex_responses"))
         with patch.object(hermes_api, "context_window", side_effect=lambda model: 900_000 if "sol" in model else 272_000):
