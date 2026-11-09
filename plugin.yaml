@@ -8,6 +8,11 @@ author: dhvcc
 license: MIT
 description: Price- and cache-aware per-turn routing between Luna and Sol on the Hermes Codex subscription.
 tags: [models, routing, codex]
+requires_env:
+  - name: OPENAI_API_KEY
+    description: Optional. Better routing through the Decisions API, a fraction of a cent per turn. Press Enter to skip.
+    url: https://platform.openai.com/api-keys
+    secret: true
 provides_hooks:
   - pre_llm_call
   - post_api_request

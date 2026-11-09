@@ -227,6 +227,10 @@ class Router:
         try:
             result = self._remote_tier(history, user_message, session_id)
         except Exception as exc:
+            if getattr(exc, "code", None) in (401, 403):
+                self._remote_tier = None
+                log.warning("smart-router: Decisions API rejected the OpenAI key; local classifier until restart")
+                return None
             self._remote_down_until = self._clock() + REMOTE_COOLDOWN_S
             log.warning("smart-router: Decisions API failed (%s); local classifier for %d min",
                         type(exc).__name__, REMOTE_COOLDOWN_S // 60)

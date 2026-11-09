@@ -145,8 +145,15 @@ class HermesApiTests(unittest.TestCase):
         self.assertEqual(hermes_api.context_window(LUNA), hermes_api.context_window(SOL))
 
     def test_decisions_without_key_is_skipped(self):
-        with patch.dict(os.environ, {"OPENAI_API_KEY": ""}):
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "", "VOICE_TOOLS_OPENAI_KEY": ""}):
             self.assertIsNone(hermes_api.decisions_tier([], "hi", "s"))
+
+    def test_decisions_falls_back_to_voice_key(self):
+        seen = []
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "", "VOICE_TOOLS_OPENAI_KEY": "sk-voice"}), \
+                patch("hermes_smart_router.decisions.classify", lambda *a, api_key, **k: seen.append(api_key)):
+            hermes_api.decisions_tier([], "hi", "s")
+        self.assertEqual(seen, ["sk-voice"])
 
 
 @unittest.skipIf(ResponsesApiTransport is None, "Hermes runtime not available")

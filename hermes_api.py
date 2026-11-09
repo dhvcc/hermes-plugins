@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import Any, Optional
 
 DECISIONS_TIMEOUT_S = 2.0
+API_KEY_NAMES = ("OPENAI_API_KEY", "VOICE_TOOLS_OPENAI_KEY")
 
 
 def price(model: str, prompt_tokens: int, cached_tokens: int, output_tokens: int) -> Optional[float]:
@@ -45,11 +46,11 @@ def context_window(model: str) -> int:
 
 
 def decisions_tier(history: Any, user_message: Any, session_id: str) -> Optional[tuple[str, float]]:
-    """Decisions API tier with the profile's ``OPENAI_API_KEY``; None when no key is set."""
+    """Decisions API tier with the profile's OpenAI key (the voice-tools key as fallback); None without a key."""
     from agent.secret_scope import get_secret
     from .decisions import classify
 
-    api_key = get_secret("OPENAI_API_KEY")
+    api_key = next((key for key in map(get_secret, API_KEY_NAMES) if key), None)
     if not api_key:
         return None
     return classify(history, user_message, api_key=api_key, session_id=session_id, timeout=DECISIONS_TIMEOUT_S)

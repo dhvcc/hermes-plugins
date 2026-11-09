@@ -12,11 +12,7 @@ hermes plugins install dhvcc/hermes-smart-router
 
 Then use `openai-codex` with Luna or Sol as your model. That's it.
 
-For better routing, add an OpenAI API key to your profile's `.env`:
-
-```sh
-OPENAI_API_KEY=sk-...
-```
+The installer asks for an optional OpenAI API key; press Enter to skip. You can also add it to the profile's `.env` later as `OPENAI_API_KEY`. If that isn't set, the plugin uses `VOICE_TOOLS_OPENAI_KEY`, which Hermes already uses for voice. Only Hermes's own secret store is read, and the plugin never handles your Codex login.
 
 The key is used for one call per turn to the [Decisions API](https://developers.openai.com/api/docs/guides/decisions). That costs $0.10 per 1M input tokens with output free, so a fraction of a cent per turn. ChatGPT Pro and Business plans include monthly API credits that cover it. Without a key, a local keyword classifier is used.
 

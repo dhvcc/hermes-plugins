@@ -260,6 +260,23 @@ class RouterTests(unittest.TestCase):
             self.turn(turn_id="t3")
         self.assertEqual(len(calls), 2)
 
+    def test_rejected_key_disables_remote_until_restart(self):
+        calls = []
+
+        class Rejected(Exception):
+            code = 401
+
+        def remote(*args):
+            calls.append(1)
+            raise Rejected
+
+        self.router = self.make(remote_tier=remote)
+        with self.assertLogs("hermes_smart_router", "WARNING"):
+            self.turn()
+        self.clock.now += router_module.REMOTE_COOLDOWN_S + 1
+        self.turn(turn_id="t2")
+        self.assertEqual((len(calls), self.plan()[0]), (1, LUNA))
+
     def test_abandon_turn(self):
         self.turn()
         self.plan()
