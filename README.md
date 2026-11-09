@@ -9,6 +9,7 @@ Hard work goes to Sol. Everything else goes to Luna, which costs about 20x less 
 ```sh
 hermes plugins install dhvcc/hermes-smart-router
 hermes plugins enable hermes-smart-router
+hermes smart-router setup
 hermes auth add openai-codex          # sign in with ChatGPT; skip if already signed in
 hermes config set model.provider openai-codex
 hermes config set model.default gpt-6.1-sol
@@ -17,7 +18,13 @@ hermes config set --force agent.reasoning_effort high   # effort for hard turns;
 
 Restart Hermes, and the gateway if you use one, to load the plugin.
 
-The installer asks for an OpenAI API key and saves it to the profile's `.env` as `OPENAI_API_KEY`. If that isn't set, the plugin uses `VOICE_TOOLS_OPENAI_KEY`, which Hermes already uses for voice. Without a working key the plugin does nothing. Your Codex login stays with Hermes; the plugin never touches it.
+`hermes smart-router setup` picks the OpenAI API key for the turn classifier and checks it with OpenAI:
+
+- A working `OPENAI_API_KEY` is used without questions.
+- Otherwise, if you have a voice key (`VOICE_TOOLS_OPENAI_KEY`), it asks whether to use that one.
+- Otherwise, or if you say no, it asks you to paste a key and saves it to the profile's `.env`.
+
+Without a working key the plugin does nothing and Hermes runs as usual. Your Codex login stays with Hermes; the plugin never touches it.
 
 The key pays for one [Decisions API](https://developers.openai.com/api/docs/guides/decisions) call per turn: $0.10 per 1M input tokens with output free, so a fraction of a cent. ChatGPT Pro and Business plans include monthly API credits that cover it.
 
@@ -39,7 +46,7 @@ If anything goes wrong, Hermes behaves as if the plugin weren't installed. The p
 
 ## Privacy and requirements
 
-- Each user turn sends the new message and up to six recent user and assistant messages (text only; earlier messages cut to 2,000 characters, the new one to 4,000) to `api.openai.com/v1/decisions`, using your OpenAI API key. Tool output and files are not sent.
+- Each user turn sends the new message and up to six recent user and assistant messages (text only; earlier messages cut to 2,000 characters, the new one to 4,000) to `api.openai.com/v1/decisions`, using the OpenAI API key chosen in setup. Tool output and files are not sent.
 - The plugin makes no other network calls, writes no files, stores no credentials and sends no telemetry. Decisions are logged to Hermes's `agent.log` without message text.
 - The model is swapped by a subclass of Hermes's Responses transport, registered through `agent.transports.register_transport`. This needs the default `plugins.isolation: in_process`; under `host` isolation the plugin refuses to load and Hermes runs normally.
 
@@ -53,6 +60,7 @@ plugins:
     hermes-smart-router:
       settings:
         mode: route            # or shadow: log decisions without changing anything
+        api_key_env: OPENAI_API_KEY   # written by `hermes smart-router setup`
         light_model: gpt-6-luna
         heavy_model: gpt-6.1-sol
         light_effort: medium

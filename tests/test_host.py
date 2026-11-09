@@ -22,6 +22,7 @@ class Context:
     def __init__(self, config=None):
         self.config = config or {}
         self.hooks = {}
+        self.commands = []
         self.unloads = []
 
     def get_config(self, key, default=None):
@@ -32,6 +33,9 @@ class Context:
 
     def register_hook(self, name, callback):
         self.hooks[name] = callback
+
+    def register_cli_command(self, name, help, setup_fn, handler_fn=None, description=""):
+        self.commands.append(name)
 
     def unload(self):
         for callback in self.unloads:
@@ -159,15 +163,12 @@ class HermesApiTests(unittest.TestCase):
         self.assertGreater(hermes_api.estimate_tokens([{"role": "user", "content": "hello " * 100}], None), 50)
         self.assertEqual(hermes_api.context_window(LUNA), hermes_api.context_window(SOL))
 
-    def test_decisions_without_key_is_skipped(self):
-        with patch.dict(os.environ, {"OPENAI_API_KEY": "", "VOICE_TOOLS_OPENAI_KEY": ""}):
-            self.assertIsNone(hermes_api.decisions_tier([], "hi", "s"))
-
-    def test_decisions_falls_back_to_voice_key(self):
+    def test_decisions_use_only_the_chosen_key(self):
         seen = []
         with patch.dict(os.environ, {"OPENAI_API_KEY": "", "VOICE_TOOLS_OPENAI_KEY": "sk-voice"}), \
                 patch("hermes_smart_router.decisions.classify", lambda *a, api_key, **k: seen.append(api_key)):
-            hermes_api.decisions_tier([], "hi", "s")
+            self.assertIsNone(hermes_api.decisions_classifier("OPENAI_API_KEY")([], "hi", "s"))
+            hermes_api.decisions_classifier("VOICE_TOOLS_OPENAI_KEY")([], "hi", "s")
         self.assertEqual(seen, ["sk-voice"])
 
 
@@ -185,6 +186,7 @@ class RegisterTests(unittest.TestCase):
         hermes_smart_router.register(ctx)
         self.addCleanup(ctx.unload)
         self.assertEqual(set(ctx.hooks), {"pre_llm_call", "post_api_request", "api_request_error"})
+        self.assertEqual(ctx.commands, ["smart-router"])
         self.assertIsNot(type(get_transport("codex_responses")), ResponsesApiTransport)
 
 

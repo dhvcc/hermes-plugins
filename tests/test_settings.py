@@ -20,7 +20,7 @@ class SettingsTests(unittest.TestCase):
                          ("shadow", ("cron", "telegram"), 600.0, "medium"))
 
     def test_invalid_values_raise(self):
-        cases = [dict(mode="balanced"), dict(light_effort="ultra"), dict(skip_platforms="cron"), dict(skip_platforms=[1]),
+        cases = [dict(mode="balanced"), dict(api_key_env="ANTHROPIC_API_KEY"), dict(light_effort="ultra"), dict(skip_platforms="cron"), dict(skip_platforms=[1]),
                  dict(cache_ttl_seconds=True), dict(cache_ttl_seconds=-1), dict(heavy_model=""),
                  dict(light_model="gpt-6.1-sol")]
         for values in cases:

@@ -1,5 +1,5 @@
 name: hermes-smart-router
-version: 0.4.0
+version: 0.5.0
 manifest_version: 2
 api_version: 1
 kind: standalone
@@ -8,11 +8,6 @@ author: dhvcc
 license: MIT
 description: Price- and cache-aware per-turn routing between Luna and Sol on the Hermes Codex subscription.
 tags: [models, routing, codex]
-requires_env:
-  - name: OPENAI_API_KEY
-    description: Used for the Decisions API turn classifier, a fraction of a cent per turn. The router stays off without it.
-    url: https://platform.openai.com/api-keys
-    secret: true
 provides_hooks:
   - pre_llm_call
   - post_api_request

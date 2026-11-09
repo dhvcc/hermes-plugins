@@ -73,7 +73,7 @@ class Session:
 
 
 class Router:
-    def __init__(self, settings: Settings, *, classify: Classify = hermes_api.decisions_tier,
+    def __init__(self, settings: Settings, *, classify: Optional[Classify] = None,
                  price: Price = hermes_api.price,
                  catalog: Callable[[], frozenset[str]] = hermes_api.catalog,
                  estimate_tokens: Callable[[list, Optional[list]], int] = hermes_api.estimate_tokens,
@@ -85,7 +85,7 @@ class Router:
         self._catalog = catalog
         self._estimate_tokens = estimate_tokens
         self._clamp_effort = clamp_effort
-        self._classify: Optional[Classify] = classify
+        self._classify: Optional[Classify] = classify or hermes_api.decisions_classifier(settings.api_key_env)
         self._classifier_down_until = float("-inf")
         self._clock = clock
         self._sessions: OrderedDict[str, Session] = OrderedDict()

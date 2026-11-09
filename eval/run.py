@@ -71,7 +71,7 @@ def main() -> None:
             yield io.BytesIO(payload)
 
         def classify(history, message, session_id):
-            key = next((k for k in map(get_secret, hermes_api.API_KEY_NAMES) if k), None)
+            key = get_secret(router.settings.api_key_env)
             if not key:
                 raise SystemExit("no OpenAI API key for the Decisions API")
             return decisions.classify(history, message, api_key=key, session_id=session_id,

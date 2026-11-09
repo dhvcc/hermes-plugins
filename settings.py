@@ -5,12 +5,14 @@ from dataclasses import dataclass, fields
 from typing import Any, Callable
 
 MODES = ("route", "shadow")
+KEY_ENVS = ("OPENAI_API_KEY", "VOICE_TOOLS_OPENAI_KEY")
 EFFORTS = ("none", "low", "medium", "high", "xhigh", "max")
 
 
 @dataclass(frozen=True)
 class Settings:
     mode: str = "route"
+    api_key_env: str = "OPENAI_API_KEY"
     light_model: str = "gpt-6-luna"
     heavy_model: str = "gpt-6.1-sol"
     light_effort: str = "medium"
@@ -25,6 +27,7 @@ class Settings:
         raw = {f.name: get(f.name, getattr(defaults, f.name)) for f in fields(cls)}
         settings = cls(
             mode=_choice(raw["mode"], MODES, "mode"),
+            api_key_env=_choice(raw["api_key_env"], KEY_ENVS, "api_key_env"),
             light_model=_text(raw["light_model"], "light_model"),
             heavy_model=_text(raw["heavy_model"], "heavy_model"),
             light_effort=_choice(raw["light_effort"], EFFORTS, "light_effort"),
