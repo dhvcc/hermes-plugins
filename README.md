@@ -66,7 +66,7 @@ Eight assistant scenarios on a real Hermes agent with terminal and file tools, t
 
 Compared with Sol only, the router was 40% cheaper and 10% faster, at nearly the same quality. Luna alone is the cheapest but the slowest, and it fails the hardest scenario: the receipt audit scored 19% on Luna and 100% with the router, which sent it to Sol.
 
-![Quality, cost and time per session](docs/eval.png)
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/eval-dark.png"><img alt="Quality, cost and time per session" src="docs/eval.png"></picture>
 
 ## Tests
 

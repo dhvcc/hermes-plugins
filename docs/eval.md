@@ -2,7 +2,7 @@
 
 **Smart router: 97% quality vs 100% for Sol only and 84% for Luna only, at -40% cost and -10% time compared with Sol only.**
 
-![Quality, cost and time per session](eval.png)
+<picture><source media="(prefers-color-scheme: dark)" srcset="eval-dark.png"><img alt="Quality, cost and time per session" src="eval.png"></picture>
 
 | Mode | Quality | Cost per session | Time per session |
 |---|---|---|---|
