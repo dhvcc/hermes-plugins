@@ -1,0 +1,14 @@
+name: hermes-smart-router
+version: 0.3.0
+manifest_version: 2
+api_version: 1
+kind: standalone
+requires_hermes: '>=0.21.5'
+author: dhvcc
+license: MIT
+description: Price- and cache-aware per-turn routing between Luna and Sol on the Hermes Codex subscription.
+tags: [models, routing, codex]
+provides_hooks:
+  - pre_llm_call
+  - post_api_request
+  - api_request_error
