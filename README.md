@@ -10,15 +10,15 @@ Hard work goes to Sol. Everything else goes to Luna, which costs about 20x less 
 hermes plugins install dhvcc/hermes-smart-router
 ```
 
-Then use `openai-codex` with Luna or Sol as your model. That's it.
+The installer asks for an OpenAI API key and saves it to the profile's `.env` as `OPENAI_API_KEY`. If that isn't set, the plugin uses `VOICE_TOOLS_OPENAI_KEY`, which Hermes already uses for voice. Without a working key the plugin does nothing. Your Codex login stays with Hermes; the plugin never touches it.
 
-The installer asks for an optional OpenAI API key; press Enter to skip. You can also add it to the profile's `.env` later as `OPENAI_API_KEY`. If that isn't set, the plugin uses `VOICE_TOOLS_OPENAI_KEY`, which Hermes already uses for voice. Only Hermes's own secret store is read, and the plugin never handles your Codex login.
+Then use `openai-codex` with Luna or Sol as your model.
 
-The key is used for one call per turn to the [Decisions API](https://developers.openai.com/api/docs/guides/decisions). That costs $0.10 per 1M input tokens with output free, so a fraction of a cent per turn. ChatGPT Pro and Business plans include monthly API credits that cover it. Without a key, a local keyword classifier is used.
+The key pays for one [Decisions API](https://developers.openai.com/api/docs/guides/decisions) call per turn: $0.10 per 1M input tokens with output free, so a fraction of a cent. ChatGPT Pro and Business plans include monthly API credits that cover it.
 
 ## How it works
 
-1. **Classify the turn** as light, standard or heavy. A local classifier looks for code, stack traces, debugging, architecture, proofs and the like. With a key, the Decisions API also reads the last few messages, so "continue" after a debugging session counts as heavy. It can only raise the tier: any 30% chance of heavy counts as heavy. A wrong "heavy" costs a bit of money. A wrong "light" costs answer quality.
+1. **Classify the turn.** The Decisions API reads the new message and the last few messages and labels the turn light, standard or heavy. "Continue" after a debugging session counts as heavy. Any 30% chance of heavy counts as heavy, because a wrong "heavy" costs a bit of money and a wrong "light" costs answer quality.
 2. **Heavy goes to Sol**, at your reasoning effort.
 3. **Light and standard go to Luna**, at `medium` and `high` effort, never above yours. The exception is when leaving Sol would let a large prompt cache expire right before you probably need Sol again. The router prices both options with Hermes's official rates, the real cache state of each model and your pace, and keeps Sol only if that is cheaper.
 4. **One model per turn.** Tool loops never switch mid-turn.
@@ -28,7 +28,7 @@ The model is chosen inside Hermes's Responses transport, before Hermes builds th
 If anything goes wrong, Hermes behaves as if the plugin weren't installed. The plugin never retries on its own:
 - A failed routed call hands the rest of the turn back to Hermes.
 - A rate-limited or missing model is skipped for a while.
-- A failing Decisions API falls back to the local classifier.
+- If the Decisions API fails, routing pauses for 5 minutes. A rejected key turns routing off until restart.
 
 ## Settings
 
@@ -40,7 +40,6 @@ plugins:
     hermes-smart-router:
       settings:
         mode: route            # or shadow: log decisions without changing anything
-        classifier: auto       # or local: never call the Decisions API
         light_model: gpt-6-luna
         heavy_model: gpt-6.1-sol
         light_effort: medium
@@ -52,7 +51,7 @@ plugins:
 Each decision is logged to `logs/agent.log`:
 
 ```
-smart-router: session=… tier=light [local light, decisions light p_heavy=0.02] -> gpt-6-luna/medium, prompt~10k tokens, cheaper by $0.0136
+smart-router: session=… tier=light (p_heavy=0.02) -> gpt-6-luna/medium, prompt~10k tokens, cheaper by $0.0136
 ```
 
 ## Tests

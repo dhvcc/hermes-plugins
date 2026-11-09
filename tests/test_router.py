@@ -1,6 +1,6 @@
 import unittest
 
-from support import LUNA, SOL, Clock, fake_price
+from support import LUNA, SOL, Clock, fake_classify, fake_price
 from hermes_smart_router import router as router_module
 from hermes_smart_router.router import Router
 from hermes_smart_router.settings import Settings
@@ -15,10 +15,10 @@ class RouterTests(unittest.TestCase):
         self.tokens = 1_000
         self.router = self.make()
 
-    def make(self, remote_tier=None, **settings):
-        return Router(Settings(**settings), price=fake_price, catalog=lambda: self.models,
+    def make(self, classify=fake_classify, **settings):
+        return Router(Settings(**settings), classify=classify, price=fake_price, catalog=lambda: self.models,
                       estimate_tokens=lambda messages, tools: self.tokens,
-                      clamp_effort=lambda model, effort: effort, remote_tier=remote_tier, clock=self.clock)
+                      clamp_effort=lambda model, effort: effort, clock=self.clock)
 
     def turn(self, prompt="What is 2+2?", turn_id="t1", sid="s", model=SOL, **extra):
         self.router.on_turn(session_id=sid, turn_id=turn_id, user_message=prompt, model=model, platform="cli",
@@ -219,63 +219,53 @@ class RouterTests(unittest.TestCase):
         self.turn(sid="fresh")
         self.assertEqual(list(self.router._sessions), ["fresh"])
 
-    def test_remote_tier_can_raise_but_not_lower_the_local_tier(self):
+    def test_classifier_gets_history_message_and_session(self):
         seen = []
-
-        def remote(history, message, sid):
-            seen.append((history, message, sid))
-            return "heavy", 0.4
-
-        self.router = self.make(remote_tier=remote)
+        self.router = self.make(classify=lambda *args: seen.append(args) or ("light", 0.0))
         self.router.on_turn(session_id="s", turn_id="t1", user_message="ok", model=SOL, platform="cli",
                             conversation_history=[{"role": "user", "content": "plan"}])
-        self.assertIsNone(self.plan())
         self.assertEqual(seen, [([{"role": "user", "content": "plan"}], "ok", "s")])
-        self.assertIn("decisions heavy", self.router._sessions["s"].tier_source)
-        self.router = self.make(remote_tier=lambda *args: ("light", 0.01))
-        self.turn("Refactor the billing module")
-        self.assertIsNone(self.plan())
 
-    def test_missing_remote_tier_falls_back_to_local(self):
-        for answer in (("expert", 0.9), None):
-            self.router = self.make(remote_tier=lambda *args, answer=answer: answer)
+    def test_turn_without_classification_stays_native(self):
+        for answer in (None, ("expert", 0.9)):
+            self.router = self.make(classify=lambda *args, answer=answer: answer)
             self.turn()
-            self.assertEqual(self.plan()[0], LUNA)
+            self.assertIsNone(self.plan())
 
-    def test_remote_failure_cools_down_then_retries(self):
+    def test_classifier_failure_keeps_hermes_native_for_a_while(self):
         calls = []
 
-        def remote(*args):
+        def classify(*args):
             calls.append(1)
             raise TimeoutError
 
-        self.router = self.make(remote_tier=remote)
+        self.router = self.make(classify=classify)
         with self.assertLogs("hermes_smart_router", "WARNING"):
             self.turn()
-        self.assertEqual(self.plan()[0], LUNA)
+        self.assertIsNone(self.plan())
         self.turn(turn_id="t2")
         self.assertEqual(len(calls), 1)
-        self.clock.now += router_module.REMOTE_COOLDOWN_S + 1
-        with self.assertLogs("hermes_smart_router", "WARNING"):
-            self.turn(turn_id="t3")
-        self.assertEqual(len(calls), 2)
+        self.router._classify = fake_classify
+        self.turn(turn_id="t3")
+        self.assertIsNone(self.plan())
+        self.clock.now += router_module.CLASSIFIER_COOLDOWN_S + 1
+        self.turn(turn_id="t4")
+        self.assertEqual(self.plan()[0], LUNA)
 
-    def test_rejected_key_disables_remote_until_restart(self):
-        calls = []
-
+    def test_rejected_key_turns_routing_off_until_restart(self):
         class Rejected(Exception):
             code = 401
 
-        def remote(*args):
-            calls.append(1)
+        def classify(*args):
             raise Rejected
 
-        self.router = self.make(remote_tier=remote)
+        self.router = self.make(classify=classify)
         with self.assertLogs("hermes_smart_router", "WARNING"):
             self.turn()
-        self.clock.now += router_module.REMOTE_COOLDOWN_S + 1
+        self.assertIsNone(self.router._classify)
+        self.clock.now += router_module.CLASSIFIER_COOLDOWN_S + 1
         self.turn(turn_id="t2")
-        self.assertEqual((len(calls), self.plan()[0]), (1, LUNA))
+        self.assertIsNone(self.plan())
 
     def test_abandon_turn(self):
         self.turn()

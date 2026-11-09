@@ -7,8 +7,9 @@ from typing import Any, Callable, Optional
 from urllib.error import HTTPError
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
-from .classifier import HEAVY, LIGHT, STANDARD, message_text
 
+LIGHT, STANDARD, HEAVY = "light", "standard", "heavy"
+TIERS = (LIGHT, STANDARD, HEAVY)
 API_URL = "https://api.openai.com/v1/decisions"
 MODEL = "gpt-6-luna"
 CONTEXT_MESSAGES = 6
@@ -39,6 +40,16 @@ class _NoRedirect(HTTPRedirectHandler):
 
 
 _open = build_opener(_NoRedirect).open
+
+
+def message_text(message: Any) -> str:
+    if isinstance(message, str):
+        return message
+    if isinstance(message, dict):
+        return message_text(message.get("content"))
+    if isinstance(message, list):
+        return " ".join(part["text"] for part in message if isinstance(part, dict) and isinstance(part.get("text"), str))
+    return ""
 
 
 def build_input(history: Any, user_message: Any) -> list[dict]:

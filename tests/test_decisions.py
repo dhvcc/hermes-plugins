@@ -58,6 +58,11 @@ class DecisionsTests(unittest.TestCase):
         self.assertEqual(items[-1]["role"], "user")
         self.assertEqual(decisions.build_input(None, [{"type": "text", "text": "x"}]), [{"role": "user", "content": "x"}])
 
+    def test_message_text(self):
+        self.assertEqual(decisions.message_text([{"type": "text", "text": "a"}, {"type": "image"}, {"text": "b"}]), "a b")
+        self.assertEqual(decisions.message_text({"content": "c"}), "c")
+        self.assertEqual(decisions.message_text(None), "")
+
 
 if __name__ == "__main__":
     unittest.main()

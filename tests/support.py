@@ -36,3 +36,12 @@ class Clock:
 
     def __call__(self):
         return self.now
+
+
+def fake_classify(history, message, session_id):
+    text = message if isinstance(message, str) else ""
+    if text.startswith(("Refactor", "Run a security")):
+        return "heavy", 0.9
+    if text.startswith("Explain"):
+        return "standard", 0.1
+    return "light", 0.0

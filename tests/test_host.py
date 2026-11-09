@@ -4,7 +4,7 @@ import unittest
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from support import LUNA, SOL
+from support import LUNA, SOL, fake_classify
 import hermes_smart_router
 from hermes_smart_router import hermes_api
 from hermes_smart_router.router import Router
@@ -41,7 +41,7 @@ class Context:
 @unittest.skipIf(ResponsesApiTransport is None, "Hermes runtime not available")
 class TransportTests(unittest.TestCase):
     def setUp(self):
-        self.router = Router(Settings(), catalog=lambda: frozenset({LUNA, SOL}))
+        self.router = Router(Settings(), classify=fake_classify, catalog=lambda: frozenset({LUNA, SOL}))
         self.ctx = Context()
         install_transport(self.ctx, self.router)
         self.addCleanup(self.ctx.unload)

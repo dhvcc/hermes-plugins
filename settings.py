@@ -5,14 +5,12 @@ from dataclasses import dataclass, fields
 from typing import Any, Callable
 
 MODES = ("route", "shadow")
-CLASSIFIERS = ("auto", "local")
 EFFORTS = ("none", "low", "medium", "high", "xhigh", "max")
 
 
 @dataclass(frozen=True)
 class Settings:
     mode: str = "route"
-    classifier: str = "auto"
     light_model: str = "gpt-6-luna"
     heavy_model: str = "gpt-6.1-sol"
     light_effort: str = "medium"
@@ -27,7 +25,6 @@ class Settings:
         raw = {f.name: get(f.name, getattr(defaults, f.name)) for f in fields(cls)}
         settings = cls(
             mode=_choice(raw["mode"], MODES, "mode"),
-            classifier=_choice(raw["classifier"], CLASSIFIERS, "classifier"),
             light_model=_text(raw["light_model"], "light_model"),
             heavy_model=_text(raw["heavy_model"], "heavy_model"),
             light_effort=_choice(raw["light_effort"], EFFORTS, "light_effort"),

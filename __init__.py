@@ -1,7 +1,6 @@
 """Hermes Smart Router: per-turn Luna/Sol routing on the Hermes Codex subscription."""
 import logging
 
-from . import hermes_api
 from .router import Router
 from .settings import Settings
 
@@ -11,7 +10,7 @@ log = logging.getLogger("hermes_smart_router")
 def register(ctx):
     try:
         settings = Settings.load(ctx.get_config)
-        router = Router(settings, remote_tier=hermes_api.decisions_tier if settings.classifier == "auto" else None)
+        router = Router(settings)
         from .transport import install_transport
         install_transport(ctx, router)
     except Exception as exc:

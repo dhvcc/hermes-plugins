@@ -1,5 +1,6 @@
 """Session state, Hermes hook handlers and the per-turn routing plan.
 
+The Decisions API classifies each user turn; without an answer the turn stays native.
 One decision per user turn, pinned for every API call of that turn (tool loops never switch
 model mid-turn). Any error on a routed call returns the rest of the turn to native Hermes;
 Hermes alone retries, backs off and falls back.
@@ -14,10 +15,10 @@ import threading
 import time
 from typing import Any, Callable, Optional
 
-RemoteTier = Callable[[Any, Any, str], Optional[tuple[str, float]]]
+Classify = Callable[[Any, Any, str], Optional[tuple[str, float]]]
 
 from . import hermes_api
-from .classifier import HEAVY, LIGHT, TIERS, classify, message_text
+from .decisions import HEAVY, LIGHT, TIERS
 from .policy import CacheMark, Price, Stats, choose
 from .settings import EFFORTS, Settings
 
@@ -28,7 +29,7 @@ SESSION_IDLE_S = 24 * 3600.0
 CATALOG_TTL_S = 600.0
 UNAVAILABLE_BLOCK_S = 3600.0
 EXHAUSTED_BLOCK_S = 900.0
-REMOTE_COOLDOWN_S = 300.0
+CLASSIFIER_COOLDOWN_S = 300.0
 _UNAVAILABLE = ("model not found", "model_not_found", "unknown model", "unsupported model", "does not exist",
                 "model is not supported", "model is not available", "model unavailable", "do not have access")
 _EXHAUSTED = ("exhausted", "usage limit", "quota", "rate limit", "too many requests")
@@ -60,7 +61,7 @@ class Session:
     touched: float = 0.0
     turn_id: str = ""
     tier: Optional[str] = None
-    tier_source: str = "local"
+    p_heavy: float = 0.0
     turn_started: float = 0.0
     last_api_end: float = 0.0
     calls: int = 0
@@ -70,19 +71,19 @@ class Session:
 
 
 class Router:
-    def __init__(self, settings: Settings, *, price: Price = hermes_api.price,
+    def __init__(self, settings: Settings, *, classify: Classify = hermes_api.decisions_tier,
+                 price: Price = hermes_api.price,
                  catalog: Callable[[], frozenset[str]] = hermes_api.catalog,
                  estimate_tokens: Callable[[list, Optional[list]], int] = hermes_api.estimate_tokens,
                  clamp_effort: Callable[[str, str], Optional[str]] = hermes_api.clamp_effort,
-                 remote_tier: Optional[RemoteTier] = None,
                  clock: Callable[[], float] = time.monotonic) -> None:
         self.settings = settings
         self._price = price
         self._catalog = catalog
         self._estimate_tokens = estimate_tokens
         self._clamp_effort = clamp_effort
-        self._remote_tier = remote_tier
-        self._remote_down_until = float("-inf")
+        self._classify: Optional[Classify] = classify
+        self._classifier_down_until = float("-inf")
         self._clock = clock
         self._sessions: OrderedDict[str, Session] = OrderedDict()
         self._blocked: dict[str, float] = {}
@@ -104,12 +105,7 @@ class Router:
             session = self._session(session_id, self._clock())
             if session.turn_id == turn_id:
                 return None
-            previous = session.tier
-        tier, source = classify(message_text(user_message), previous), "local"
-        remote = self._classify_remotely(conversation_history, user_message, session_id)
-        if remote:
-            source = f"local {tier}, decisions {remote[0]} p_heavy={remote[1]:.2f}"
-            tier = max(tier, remote[0], key=TIERS.index)
+        tier, p_heavy = self._classify_turn(conversation_history, user_message, session_id) or (None, 0.0)
         now = self._clock()
         with self._lock:
             session = self._session(session_id, now)
@@ -118,8 +114,9 @@ class Router:
             if session.turn_started and session.last_api_end >= session.turn_started:
                 session.stats.close_turn(turn_s=session.last_api_end - session.turn_started,
                                          gap_s=now - session.last_api_end, calls=session.calls)
-            session.stats.observe_tier(tier == HEAVY)
-            session.turn_id, session.tier, session.tier_source, session.turn_started = turn_id, tier, source, now
+            if tier:
+                session.stats.observe_tier(tier == HEAVY)
+            session.turn_id, session.tier, session.p_heavy, session.turn_started = turn_id, tier, p_heavy, now
             session.calls, session.pin = 0, None
         return None
 
@@ -177,7 +174,7 @@ class Router:
         requested = dict(params.get("reasoning_config") or {})
         with self._lock:
             session = self._sessions.get(session_id)
-            if session is None or not session.turn_id:
+            if session is None or not session.tier:
                 return None
             pin = session.pin if session.pin and session.pin.turn_id == session.turn_id else None
         if pin is None:
@@ -216,24 +213,24 @@ class Router:
         if target not in usable or (effort is None and tier != HEAVY):
             return native
         pin = Pin(session.turn_id, target, effort, applied=self.settings.mode == "route")
-        log.info("smart-router%s: session=%s tier=%s [%s] -> %s/%s, prompt~%dk tokens, %s",
-                 "" if pin.applied else " [shadow]", session_id[:12], tier, session.tier_source, target,
+        log.info("smart-router%s: session=%s tier=%s (p_heavy=%.2f) -> %s/%s, prompt~%dk tokens, %s",
+                 "" if pin.applied else " [shadow]", session_id[:12], tier, session.p_heavy, target,
                  effort or "default", prompt_tokens // 1000, reason)
         return pin
 
-    def _classify_remotely(self, history: Any, user_message: Any, session_id: str) -> Optional[tuple[str, float]]:
-        if self._remote_tier is None or self._clock() < self._remote_down_until:
+    def _classify_turn(self, history: Any, user_message: Any, session_id: str) -> Optional[tuple[str, float]]:
+        if self._classify is None or self._clock() < self._classifier_down_until:
             return None
         try:
-            result = self._remote_tier(history, user_message, session_id)
+            result = self._classify(history, user_message, session_id)
         except Exception as exc:
             if getattr(exc, "code", None) in (401, 403):
-                self._remote_tier = None
-                log.warning("smart-router: Decisions API rejected the OpenAI key; local classifier until restart")
+                self._classify = None
+                log.warning("smart-router: Decisions API rejected the OpenAI key; routing off until restart")
                 return None
-            self._remote_down_until = self._clock() + REMOTE_COOLDOWN_S
-            log.warning("smart-router: Decisions API failed (%s); local classifier for %d min",
-                        type(exc).__name__, REMOTE_COOLDOWN_S // 60)
+            self._classifier_down_until = self._clock() + CLASSIFIER_COOLDOWN_S
+            log.warning("smart-router: Decisions API failed (%s); routing off for %d min",
+                        type(exc).__name__, CLASSIFIER_COOLDOWN_S // 60)
             return None
         return result if result and result[0] in TIERS else None
 
