@@ -1,0 +1,6 @@
+Employee: Tom Okafor
+Category: meal
+---
+RECEIPT - CAFE NORD
+Date: 2026-10-16
+Amount due: USD 12.17

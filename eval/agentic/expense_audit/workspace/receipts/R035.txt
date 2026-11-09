@@ -1,0 +1,9 @@
+Employee: Jonas Weber
+Category: meal
+---
+{
+ "merchant": "Ramen Ichi",
+ "day": "2026-10-13",
+ "total": 15.32,
+ "ccy": "EUR"
+}

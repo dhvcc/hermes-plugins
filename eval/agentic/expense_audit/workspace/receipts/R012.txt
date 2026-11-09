@@ -1,0 +1,7 @@
+Employee: Tom Okafor
+Category: hotel
+Nights: 1
+---
+Hotel Arcadia
+09.10.2026
+Gesamt: 221,69 EUR

@@ -1,0 +1,6 @@
+Employee: Mara Lind
+Category: meal
+---
+Deli 24
+11.09.2026
+Gesamt: 16,98 USD

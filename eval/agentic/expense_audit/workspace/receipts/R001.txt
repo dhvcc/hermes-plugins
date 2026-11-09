@@ -1,0 +1,7 @@
+Employee: Priya Nair
+Category: hotel
+Nights: 1
+---
+Park Inn
+13.09.2026
+Gesamt: 192,98 EUR

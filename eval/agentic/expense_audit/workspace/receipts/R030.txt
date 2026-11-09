@@ -1,0 +1,6 @@
+Employee: Tom Okafor
+Category: meal
+---
+RECEIPT - RAMEN ICHI
+Date: 2026-09-10
+Amount due: GBP 16.32

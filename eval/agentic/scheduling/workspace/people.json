@@ -1,0 +1,22 @@
+{
+  "Anna": {
+    "time_zone": "Europe/Berlin",
+    "working_hours_local": "09:00-17:00",
+    "working_days": "Mon-Fri"
+  },
+  "Ben": {
+    "time_zone": "America/New_York",
+    "working_hours_local": "09:00-17:00",
+    "working_days": "Mon-Fri"
+  },
+  "Chitra": {
+    "time_zone": "Asia/Kolkata",
+    "working_hours_local": "12:00-21:00",
+    "working_days": "Mon-Fri"
+  },
+  "Dan": {
+    "time_zone": "Europe/London",
+    "working_hours_local": "08:00-16:00",
+    "working_days": "Mon-Fri"
+  }
+}

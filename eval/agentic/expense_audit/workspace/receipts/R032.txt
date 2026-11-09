@@ -1,0 +1,6 @@
+Employee: Jonas Weber
+Category: meal
+---
+RECEIPT - CAFE NORD
+Date: 2026-10-04
+Amount due: EUR 20.66

@@ -1,0 +1,7 @@
+Employee: Mara Lind
+Category: taxi
+Note: late meeting
+---
+FreeNow
+14.09.2026
+Gesamt: 32,15 USD

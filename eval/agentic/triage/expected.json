@@ -1,0 +1,100 @@
+{
+  "rows": {
+    "01.eml": {
+      "action": "ignore",
+      "due": ""
+    },
+    "02.eml": {
+      "action": "schedule",
+      "due": "2026-11-13"
+    },
+    "03.eml": {
+      "action": "ignore",
+      "due": ""
+    },
+    "04.eml": {
+      "action": "pay",
+      "due": "2026-11-24"
+    },
+    "05.eml": {
+      "action": "report",
+      "due": "2026-11-07"
+    },
+    "06.eml": {
+      "action": "report",
+      "due": "2026-11-11"
+    },
+    "07.eml": {
+      "action": "ignore",
+      "due": ""
+    },
+    "08.eml": {
+      "action": "pay",
+      "due": "2026-12-11"
+    },
+    "09.eml": {
+      "action": "report",
+      "due": "2026-11-11"
+    },
+    "10.eml": {
+      "action": "ignore",
+      "due": ""
+    },
+    "11.eml": {
+      "action": "ignore",
+      "due": ""
+    },
+    "12.eml": {
+      "action": "ignore",
+      "due": ""
+    },
+    "13.eml": {
+      "action": "report",
+      "due": "2026-11-03"
+    },
+    "14.eml": {
+      "action": "report",
+      "due": "2026-11-08"
+    },
+    "15.eml": {
+      "action": "report",
+      "due": "2026-11-10"
+    },
+    "16.eml": {
+      "action": "ignore",
+      "due": ""
+    },
+    "17.eml": {
+      "action": "report",
+      "due": "2026-11-11"
+    },
+    "18.eml": {
+      "action": "report",
+      "due": "2026-11-10"
+    },
+    "19.eml": {
+      "action": "reply",
+      "due": "2026-11-05"
+    },
+    "20.eml": {
+      "action": "reply",
+      "due": "2026-11-09"
+    },
+    "21.eml": {
+      "action": "ignore",
+      "due": ""
+    },
+    "22.eml": {
+      "action": "reply",
+      "due": "2026-11-12"
+    },
+    "23.eml": {
+      "action": "schedule",
+      "due": "2026-11-16"
+    },
+    "24.eml": {
+      "action": "reply",
+      "due": "2026-11-13"
+    }
+  }
+}

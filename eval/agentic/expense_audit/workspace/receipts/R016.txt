@@ -1,0 +1,6 @@
+Employee: Priya Nair
+Category: meal
+---
+RECEIPT - TRATTORIA SOLE
+Date: 2026-09-08
+Amount due: EUR 19.30

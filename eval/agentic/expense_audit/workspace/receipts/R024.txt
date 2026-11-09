@@ -1,0 +1,9 @@
+Employee: Mara Lind
+Category: meal
+---
+{
+ "merchant": "Trattoria Sole",
+ "day": "2026-09-20",
+ "total": 27.03,
+ "ccy": "EUR"
+}

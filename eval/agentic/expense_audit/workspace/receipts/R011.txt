@@ -1,0 +1,6 @@
+Employee: Priya Nair
+Category: meal
+---
+Deli 24
+07.10.2026
+Gesamt: 29,57 EUR

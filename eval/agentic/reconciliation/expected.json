@@ -1,0 +1,118 @@
+{
+  "rows": {
+    "INV-1041": {
+      "status": "partial",
+      "received_eur": "788.80"
+    },
+    "INV-1042": {
+      "status": "paid",
+      "received_eur": "5624.00"
+    },
+    "INV-1043": {
+      "status": "paid",
+      "received_eur": "1895.50"
+    },
+    "INV-1044": {
+      "status": "paid",
+      "received_eur": "5657.00"
+    },
+    "INV-1045": {
+      "status": "paid",
+      "received_eur": "1225.00"
+    },
+    "INV-1046": {
+      "status": "paid",
+      "received_eur": "3228.00"
+    },
+    "INV-1047": {
+      "status": "partial",
+      "received_eur": "3181.00"
+    },
+    "INV-1048": {
+      "status": "paid",
+      "received_eur": "1931.00"
+    },
+    "INV-1049": {
+      "status": "partial",
+      "received_eur": "779.60"
+    },
+    "INV-1050": {
+      "status": "paid",
+      "received_eur": "5690.00"
+    },
+    "INV-1051": {
+      "status": "paid",
+      "received_eur": "2431.00"
+    },
+    "INV-1052": {
+      "status": "paid",
+      "received_eur": "1948.50"
+    },
+    "INV-1053": {
+      "status": "paid",
+      "received_eur": "1924.00"
+    },
+    "INV-1054": {
+      "status": "partial",
+      "received_eur": "5645.00"
+    },
+    "INV-1055": {
+      "status": "paid",
+      "received_eur": "498.00"
+    },
+    "INV-1056": {
+      "status": "paid",
+      "received_eur": "807.00"
+    },
+    "INV-1057": {
+      "status": "partial",
+      "received_eur": "198.00"
+    },
+    "INV-1058": {
+      "status": "partial",
+      "received_eur": "1293.20"
+    },
+    "INV-1059": {
+      "status": "unpaid",
+      "received_eur": "0.00"
+    },
+    "INV-1060": {
+      "status": "paid",
+      "received_eur": "1222.50"
+    },
+    "INV-1061": {
+      "status": "unpaid",
+      "received_eur": "0.00"
+    },
+    "INV-1062": {
+      "status": "paid",
+      "received_eur": "1298.00"
+    },
+    "INV-1063": {
+      "status": "paid",
+      "received_eur": "827.50"
+    },
+    "INV-1064": {
+      "status": "paid",
+      "received_eur": "5673.00"
+    },
+    "INV-1065": {
+      "status": "paid",
+      "received_eur": "1910.00"
+    }
+  },
+  "top_debtors": [
+    [
+      "Globex Ltd",
+      "3441.20"
+    ],
+    [
+      "Initech AG",
+      "1258.00"
+    ],
+    [
+      "Stark KG",
+      "1218.20"
+    ]
+  ]
+}

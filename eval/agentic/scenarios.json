@@ -1,0 +1,54 @@
+[
+  {
+    "id": "expense_audit",
+    "turns": [
+      "./receipts has 36 expense receipts and ./policy.md is our expense policy, with exchange rates in ./fx.csv. Audit every receipt and write audit.csv with columns receipt_id,approved_eur,status. Then tell me the total reimbursable amount. End your reply with `ANSWER: <total EUR>`.",
+      "Which employee lost the most money to rejections and partial cuts, not counting duplicates, and how much? End your reply with `ANSWER: <name>, <EUR>`."
+    ]
+  },
+  {
+    "id": "reconciliation",
+    "turns": [
+      "Reconcile bank.csv against invoices.csv following rules.md. Write reconciliation.csv with columns invoice_id,status,received_eur. End your reply with `ANSWER: done`.",
+      "Which three clients owe us the most right now, and how much each? End your reply with `ANSWER: <client> <EUR>; <client> <EUR>; <client> <EUR>`, largest first."
+    ]
+  },
+  {
+    "id": "incident",
+    "turns": [
+      "Customers complained about failed checkouts. Investigate ./logs and write answer.json with keys bad_version, affected_endpoint, first_error_request_id (the first request that failed because of this incident), error_rate_after_pct (the share of requests to the affected endpoint after the deploy that failed with status 500 or higher, in percent with one decimal) and root_cause (one sentence)."
+    ]
+  },
+  {
+    "id": "bugfix",
+    "turns": [
+      "The shop package in this folder has bugs, and some behaviour is described only in docstrings. Fix the package so every function does what its docstring says. Visible tests are in tests/, and more tests are hidden. Do not edit tests/. End your reply with `ANSWER: done`."
+    ]
+  },
+  {
+    "id": "scheduling",
+    "turns": [
+      "Find the earliest 45-minute slot in the week of 2026-11-16 when Anna, Ben, Chitra and Dan are all free, within each person's working hours and working days in their own time zone (see people.json and calendars/). Slots start on a quarter hour. End your reply with `ANSWER: <start in UTC as YYYY-MM-DDTHH:MMZ>`.",
+      "That slot might fall through. What is the next possible 45-minute slot that starts after the first one ends? Same answer format."
+    ]
+  },
+  {
+    "id": "kpi_report",
+    "turns": [
+      "Using subscriptions.csv, plans.json and metrics.md, write kpi.md with a markdown table of MRR and churned customers for the month ends of July, August, September and October 2026, one row per month. End your reply with `ANSWER: done`."
+    ]
+  },
+  {
+    "id": "handbook",
+    "turns": [
+      "Answer the questions in questions.json using the documents in ./handbook. Write answers.json mapping each question id to a short answer: a number, yes or no, or '<EUR>, <days>' where asked. End your reply with `ANSWER: done`."
+    ]
+  },
+  {
+    "id": "triage",
+    "turns": [
+      "Triage the inbox in ./mail following rules.md and write triage.csv. End your reply with `ANSWER: done`.",
+      "How many emails did you mark as report? End your reply with `ANSWER: <number>`."
+    ]
+  }
+]

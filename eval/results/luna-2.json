@@ -1,0 +1,190 @@
+{
+  "mode": "luna",
+  "effort": "xhigh",
+  "rows": [
+    {
+      "id": "expense_audit",
+      "mode": "luna",
+      "score": 0.287,
+      "parts": {
+        "rows": 0.8611111111111112,
+        "total": 0.0,
+        "follow_up": 0.0
+      },
+      "seconds": 310.6,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ],
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 13,
+      "llm_usd": 0.013837,
+      "decisions_usd": 0.0,
+      "error": null
+    },
+    {
+      "id": "reconciliation",
+      "mode": "luna",
+      "score": 1.0,
+      "parts": {
+        "rows": 1.0,
+        "follow_up": 1.0
+      },
+      "seconds": 71.5,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ],
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 7,
+      "llm_usd": 0.002481,
+      "decisions_usd": 0.0,
+      "error": null
+    },
+    {
+      "id": "incident",
+      "mode": "luna",
+      "score": 1.0,
+      "parts": {
+        "bad_version": 1.0,
+        "endpoint": 1.0,
+        "first_error": 1.0,
+        "error_rate": 1.0,
+        "root_cause": 1.0
+      },
+      "seconds": 66.6,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 7,
+      "llm_usd": 0.009411,
+      "decisions_usd": 0.0,
+      "error": null,
+      "answers": [
+        "Wrote and validated answer.json with the incident findings. The post-deploy checkout error rate is 26.6% (50 of 188 requests)."
+      ]
+    },
+    {
+      "id": "bugfix",
+      "mode": "luna",
+      "score": 1.0,
+      "parts": {
+        "hidden_tests": 1.0
+      },
+      "seconds": 150.1,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 9,
+      "llm_usd": 0.00516,
+      "decisions_usd": 0.0,
+      "error": null
+    },
+    {
+      "id": "scheduling",
+      "mode": "luna",
+      "score": 0.0,
+      "parts": {
+        "first": 0.0,
+        "follow_up": 0.0
+      },
+      "seconds": 99.0,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ],
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 8,
+      "llm_usd": 0.003922,
+      "decisions_usd": 0.0,
+      "error": null,
+      "answers": [
+        "Earliest shared slot: Friday, 2026-11-20, 14:00\u201314:45 UTC.\n\nANSWER: 2026-11-20T14:00Z",
+        "ANSWER: 2026-11-20T14:45Z"
+      ]
+    },
+    {
+      "id": "kpi_report",
+      "mode": "luna",
+      "score": 1.0,
+      "parts": {
+        "2026-07_mrr": 1.0,
+        "2026-07_churn": 1.0,
+        "2026-08_mrr": 1.0,
+        "2026-08_churn": 1.0,
+        "2026-09_mrr": 1.0,
+        "2026-09_churn": 1.0,
+        "2026-10_mrr": 1.0,
+        "2026-10_churn": 1.0
+      },
+      "seconds": 51.0,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 6,
+      "llm_usd": 0.002106,
+      "decisions_usd": 0.0,
+      "error": null
+    },
+    {
+      "id": "handbook",
+      "mode": "luna",
+      "score": 1.0,
+      "parts": {
+        "q1": 1.0,
+        "q2": 1.0,
+        "q3": 1.0,
+        "q4": 1.0,
+        "q5": 1.0,
+        "q6": 1.0
+      },
+      "seconds": 132.5,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 6,
+      "llm_usd": 0.002375,
+      "decisions_usd": 0.0,
+      "error": null
+    },
+    {
+      "id": "triage",
+      "mode": "luna",
+      "score": 1.0,
+      "parts": {
+        "rows": 1.0,
+        "follow_up": 1.0
+      },
+      "seconds": 182.2,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ],
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 10,
+      "llm_usd": 0.006238,
+      "decisions_usd": 0.0,
+      "error": null
+    }
+  ]
+}

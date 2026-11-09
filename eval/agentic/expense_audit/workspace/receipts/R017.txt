@@ -1,0 +1,9 @@
+Employee: Mara Lind
+Category: office
+---
+{
+ "merchant": "Staples",
+ "day": "2026-09-12",
+ "total": 43.98,
+ "ccy": "GBP"
+}

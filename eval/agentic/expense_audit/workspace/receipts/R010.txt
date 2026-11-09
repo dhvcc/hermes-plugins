@@ -1,0 +1,6 @@
+Employee: Priya Nair
+Category: alcohol
+---
+RECEIPT - BAR LUMEN
+Date: 2026-10-03
+Amount due: EUR 58.15

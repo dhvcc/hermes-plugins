@@ -1,0 +1,6 @@
+Employee: Tom Okafor
+Category: meal
+---
+Ramen Ichi
+10.09.2026
+Gesamt: 16,32 GBP

@@ -1,0 +1,6 @@
+Employee: Mara Lind
+Category: meal
+---
+Ramen Ichi
+21.09.2026
+Gesamt: 18,50 EUR

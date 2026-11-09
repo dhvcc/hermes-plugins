@@ -1,0 +1,9 @@
+Employee: Tom Okafor
+Category: meal
+---
+{
+ "merchant": "Cafe Nord",
+ "day": "2026-09-03",
+ "total": 22.71,
+ "ccy": "EUR"
+}

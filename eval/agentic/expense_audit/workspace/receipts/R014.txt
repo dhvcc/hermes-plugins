@@ -1,0 +1,6 @@
+Employee: Mara Lind
+Category: meal
+---
+Ramen Ichi
+05.09.2026
+Gesamt: 13,49 GBP

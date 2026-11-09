@@ -1,0 +1,190 @@
+{
+  "mode": "sol",
+  "effort": "xhigh",
+  "rows": [
+    {
+      "id": "expense_audit",
+      "mode": "sol",
+      "score": 1.0,
+      "parts": {
+        "rows": 1.0,
+        "total": 1.0,
+        "follow_up": 1.0
+      },
+      "seconds": 119.1,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ],
+        [
+          "gpt-6.1-sol"
+        ]
+      ],
+      "api_calls": 8,
+      "llm_usd": 0.073874,
+      "decisions_usd": 0.0,
+      "error": null
+    },
+    {
+      "id": "reconciliation",
+      "mode": "sol",
+      "score": 1.0,
+      "parts": {
+        "rows": 1.0,
+        "follow_up": 1.0
+      },
+      "seconds": 86.9,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ],
+        [
+          "gpt-6.1-sol"
+        ]
+      ],
+      "api_calls": 8,
+      "llm_usd": 0.053144,
+      "decisions_usd": 0.0,
+      "error": null
+    },
+    {
+      "id": "incident",
+      "mode": "sol",
+      "score": 1.0,
+      "parts": {
+        "bad_version": 1.0,
+        "endpoint": 1.0,
+        "first_error": 1.0,
+        "error_rate": 1.0,
+        "root_cause": 1.0
+      },
+      "seconds": 40.2,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ]
+      ],
+      "api_calls": 6,
+      "llm_usd": 0.1303,
+      "decisions_usd": 0.0,
+      "error": null,
+      "answers": [
+        "Wrote and validated /private/var/folders/g_/2qrpbdvn1h18k__jvffr37t40000gp/T/eval-incident-k9edzvls/answer.json\n\nVersion 2.4.1 caused /checkout payment-gateway timeouts. First incident failure: req-002007. Post-deploy error rate: 26.6% (50 of 188 requests)."
+      ]
+    },
+    {
+      "id": "bugfix",
+      "mode": "sol",
+      "score": 1.0,
+      "parts": {
+        "hidden_tests": 1.0
+      },
+      "seconds": 181.0,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ]
+      ],
+      "api_calls": 10,
+      "llm_usd": 0.130006,
+      "decisions_usd": 0.0,
+      "error": null
+    },
+    {
+      "id": "scheduling",
+      "mode": "sol",
+      "score": 1.0,
+      "parts": {
+        "first": 1.0,
+        "follow_up": 1.0
+      },
+      "seconds": 107.6,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ],
+        [
+          "gpt-6.1-sol"
+        ]
+      ],
+      "api_calls": 9,
+      "llm_usd": 0.071729,
+      "decisions_usd": 0.0,
+      "error": null,
+      "answers": [
+        "The earliest slot is Wednesday, 18 November 2026, 14:00\u201314:45 UTC.\n\nLocal times:\n  Anna:   15:00\u201315:45 CET\n  Ben:    09:00\u201309:45 EST\n  Chitra: 19:30\u201320:15 IST\n  Dan:    14:00\u201314:45 GMT\n\nAll four are free and within their working hours and days. Every earlier quarter-hour start in the week is either outside someone\u2019s working hours or conflicts with a calendar event.\n\nANSWER: 2026-11-18T14:00Z",
+        "14:45 UTC end\u2014the next slot is Thursday, 19 November 2026, 14:00\u201314:45 UTC.\n\nLocal times:\n  Anna:   15:00\u201315:45 CET\n  Ben:    09:00\u201309:45 EST\n  Chitra: 19:30\u201320:15 IST\n  Dan:    14:00\u201314:45 GMT\n\nAll four are free and within their working hours and days.\n\nIf starting exactly when the first slot ends is acceptable, Wednesday, 18 November, 14:45\u201315:30 UTC is also available.\n\nANSWER: 2026-11-19T14:00Z"
+      ]
+    },
+    {
+      "id": "kpi_report",
+      "mode": "sol",
+      "score": 1.0,
+      "parts": {
+        "2026-07_mrr": 1.0,
+        "2026-07_churn": 1.0,
+        "2026-08_mrr": 1.0,
+        "2026-08_churn": 1.0,
+        "2026-09_mrr": 1.0,
+        "2026-09_churn": 1.0,
+        "2026-10_mrr": 1.0,
+        "2026-10_churn": 1.0
+      },
+      "seconds": 44.5,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ]
+      ],
+      "api_calls": 6,
+      "llm_usd": 0.030953,
+      "decisions_usd": 0.0,
+      "error": null
+    },
+    {
+      "id": "handbook",
+      "mode": "sol",
+      "score": 1.0,
+      "parts": {
+        "q1": 1.0,
+        "q2": 1.0,
+        "q3": 1.0,
+        "q4": 1.0,
+        "q5": 1.0,
+        "q6": 1.0
+      },
+      "seconds": 112.8,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ]
+      ],
+      "api_calls": 7,
+      "llm_usd": 0.076612,
+      "decisions_usd": 0.0,
+      "error": null
+    },
+    {
+      "id": "triage",
+      "mode": "sol",
+      "score": 1.0,
+      "parts": {
+        "rows": 1.0,
+        "follow_up": 1.0
+      },
+      "seconds": 61.9,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ],
+        [
+          "gpt-6.1-sol"
+        ]
+      ],
+      "api_calls": 8,
+      "llm_usd": 0.045068,
+      "decisions_usd": 0.0,
+      "error": null
+    }
+  ]
+}

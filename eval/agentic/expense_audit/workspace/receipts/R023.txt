@@ -1,0 +1,10 @@
+Employee: Priya Nair
+Category: taxi
+Note: late meeting
+---
+{
+ "merchant": "FreeNow",
+ "day": "2026-09-21",
+ "total": 25.07,
+ "ccy": "USD"
+}

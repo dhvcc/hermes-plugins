@@ -1,0 +1,10 @@
+Employee: Jonas Weber
+Category: taxi
+Note: from the airport
+---
+{
+ "merchant": "FreeNow",
+ "day": "2026-09-18",
+ "total": 15.64,
+ "ccy": "EUR"
+}

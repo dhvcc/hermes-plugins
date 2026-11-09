@@ -1,0 +1,26 @@
+[
+  {
+    "id": "q1",
+    "question": "How many vacation days per year does someone working 24 of 40 hours get?"
+  },
+  {
+    "id": "q2",
+    "question": "Today a colleague asks to work from abroad starting in 7 working days. Allowed? Answer yes or no."
+  },
+  {
+    "id": "q3",
+    "question": "Two conferences abroad cost 900 EUR and 700 EUR. How much learning budget is left this year?"
+  },
+  {
+    "id": "q4",
+    "question": "How many working days per calendar year may someone work from abroad?"
+  },
+  {
+    "id": "q5",
+    "question": "An engineer joined 2 years and 1 month ago. Total home office budget received so far, in EUR?"
+  },
+  {
+    "id": "q6",
+    "question": "Someone was on call for 3 weeks and handled two weekend incidents of 3 and 1.5 hours. Extra pay in EUR and compensatory days? Answer as '<EUR>, <days>'."
+  }
+]

@@ -1,0 +1,6 @@
+Employee: Mara Lind
+Category: meal
+---
+RECEIPT - RAMEN ICHI
+Date: 2026-10-10
+Amount due: GBP 31.60

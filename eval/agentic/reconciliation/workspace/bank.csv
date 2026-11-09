@@ -1,0 +1,27 @@
+date,amount_eur,counterparty,reference
+2026-08-15,1298.00,Globex Ltd,Payment INV-1062
+2026-08-19,5657.00,Umbrella BV,Payment inv 1044
+2026-08-28,1924.00,Stark KG,Payment inv 1053
+2026-08-30,1910.00,Initech AG,Payment inv 1065
+2026-08-31,498.00,Acme GmbH,Payment INV-1055
+2026-08-31,1293.20,Globex Ltd,Teilzahlung inv 1058
+2026-09-04,1222.50,Vandelay SA,INV1060
+2026-09-07,1895.50,Vandelay SA,INV1043
+2026-09-11,827.50,Hooli Inc,INV-1O63
+2026-09-13,198.00,Globex Ltd,Teilzahlung inv-1057
+2026-09-15,1225.00,Hooli Inc,Thanks for the great work
+2026-09-16,788.80,Stark KG,Teilzahlung INV-1O41
+2026-09-16,5673.00,Hooli Inc,Payment INV-1064
+2026-09-17,3181.00,Stark KG,INV-1047
+2026-09-19,-300.00,Acme GmbH,Refund credit note CN-7
+2026-09-25,1931.00,Stark KG,Payment INV-1048
+2026-10-01,-2400.00,Landlord Immobilien,Rent October
+2026-10-03,-4.90,Bank,Card fees
+2026-10-19,5690.00,Vandelay SA,Payment INV-1050
+2026-10-19,2431.00,Acme GmbH,Thanks for the great work
+2026-10-20,779.60,Globex Ltd,Teilzahlung Rechnung 1049
+2026-10-22,807.00,Acme GmbH,Thanks for the great work
+2026-10-22,5645.00,Globex Ltd,INV-1O54
+2026-10-26,8852.00,Umbrella BV,INV-1046 + Rechnung 1042
+2026-10-28,-8120.55,Payroll,Salaries October
+2026-11-03,1948.50,Initech AG,INV-1O52

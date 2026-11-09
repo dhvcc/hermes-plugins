@@ -1,0 +1,7 @@
+{
+  "bad_version": "2.4.1",
+  "affected_endpoint": "/checkout",
+  "first_error_request_id": "req-002007",
+  "error_rate_after_pct": 26.6,
+  "root_cause_contains": "payment-gateway"
+}

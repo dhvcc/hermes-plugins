@@ -1,0 +1,10 @@
+Employee: Mara Lind
+Category: hotel
+Nights: 1
+---
+{
+ "merchant": "Park Inn",
+ "day": "2026-09-08",
+ "total": 177.25,
+ "ccy": "USD"
+}

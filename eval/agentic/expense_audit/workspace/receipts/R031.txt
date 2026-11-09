@@ -1,0 +1,9 @@
+Employee: Jonas Weber
+Category: meal
+---
+{
+ "merchant": "Deli 24",
+ "day": "2026-10-08",
+ "total": 12.98,
+ "ccy": "EUR"
+}

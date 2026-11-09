@@ -1,0 +1,22 @@
+{
+  "starter_m": {
+    "price": 29,
+    "period": "month"
+  },
+  "team_m": {
+    "price": 99,
+    "period": "month"
+  },
+  "team_y": {
+    "price": 990,
+    "period": "year"
+  },
+  "business_m": {
+    "price": 249,
+    "period": "month"
+  },
+  "business_y": {
+    "price": 2490,
+    "period": "year"
+  }
+}

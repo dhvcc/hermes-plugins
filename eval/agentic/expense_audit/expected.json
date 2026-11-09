@@ -1,0 +1,151 @@
+{
+  "rows": {
+    "R001": {
+      "approved_eur": "160.00",
+      "status": "partial"
+    },
+    "R002": {
+      "approved_eur": "160.00",
+      "status": "partial"
+    },
+    "R003": {
+      "approved_eur": "15.62",
+      "status": "approved"
+    },
+    "R004": {
+      "approved_eur": "0.00",
+      "status": "rejected"
+    },
+    "R005": {
+      "approved_eur": "29.58",
+      "status": "approved"
+    },
+    "R006": {
+      "approved_eur": "22.40",
+      "status": "approved"
+    },
+    "R007": {
+      "approved_eur": "21.66",
+      "status": "approved"
+    },
+    "R008": {
+      "approved_eur": "0.94",
+      "status": "partial"
+    },
+    "R009": {
+      "approved_eur": "19.09",
+      "status": "approved"
+    },
+    "R010": {
+      "approved_eur": "0.00",
+      "status": "rejected"
+    },
+    "R011": {
+      "approved_eur": "29.57",
+      "status": "approved"
+    },
+    "R012": {
+      "approved_eur": "160.00",
+      "status": "partial"
+    },
+    "R013": {
+      "approved_eur": "0.00",
+      "status": "rejected"
+    },
+    "R014": {
+      "approved_eur": "15.78",
+      "status": "approved"
+    },
+    "R015": {
+      "approved_eur": "18.50",
+      "status": "approved"
+    },
+    "R016": {
+      "approved_eur": "19.30",
+      "status": "approved"
+    },
+    "R017": {
+      "approved_eur": "51.46",
+      "status": "approved"
+    },
+    "R018": {
+      "approved_eur": "0.00",
+      "status": "duplicate"
+    },
+    "R019": {
+      "approved_eur": "320.00",
+      "status": "partial"
+    },
+    "R020": {
+      "approved_eur": "31.37",
+      "status": "approved"
+    },
+    "R021": {
+      "approved_eur": "29.75",
+      "status": "approved"
+    },
+    "R022": {
+      "approved_eur": "15.32",
+      "status": "approved"
+    },
+    "R023": {
+      "approved_eur": "23.06",
+      "status": "approved"
+    },
+    "R024": {
+      "approved_eur": "27.03",
+      "status": "approved"
+    },
+    "R025": {
+      "approved_eur": "24.26",
+      "status": "approved"
+    },
+    "R026": {
+      "approved_eur": "22.71",
+      "status": "approved"
+    },
+    "R027": {
+      "approved_eur": "15.64",
+      "status": "approved"
+    },
+    "R028": {
+      "approved_eur": "160.00",
+      "status": "partial"
+    },
+    "R029": {
+      "approved_eur": "11.44",
+      "status": "approved"
+    },
+    "R030": {
+      "approved_eur": "0.00",
+      "status": "duplicate"
+    },
+    "R031": {
+      "approved_eur": "12.98",
+      "status": "approved"
+    },
+    "R032": {
+      "approved_eur": "20.66",
+      "status": "approved"
+    },
+    "R033": {
+      "approved_eur": "12.64",
+      "status": "approved"
+    },
+    "R034": {
+      "approved_eur": "36.34",
+      "status": "approved"
+    },
+    "R035": {
+      "approved_eur": "0.00",
+      "status": "duplicate"
+    },
+    "R036": {
+      "approved_eur": "27.71",
+      "status": "approved"
+    }
+  },
+  "total": "1514.81",
+  "worst_employee": "Tom Okafor",
+  "worst_lost": "242.35"
+}

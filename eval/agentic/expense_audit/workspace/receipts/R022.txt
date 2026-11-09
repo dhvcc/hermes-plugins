@@ -1,0 +1,6 @@
+Employee: Jonas Weber
+Category: meal
+---
+RECEIPT - RAMEN ICHI
+Date: 2026-10-13
+Amount due: EUR 15.32

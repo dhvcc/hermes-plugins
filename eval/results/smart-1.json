@@ -1,0 +1,190 @@
+{
+  "mode": "smart",
+  "effort": "xhigh",
+  "rows": [
+    {
+      "id": "expense_audit",
+      "mode": "smart",
+      "score": 1.0,
+      "parts": {
+        "rows": 1.0,
+        "total": 1.0,
+        "follow_up": 1.0
+      },
+      "seconds": 95.5,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ],
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 7,
+      "llm_usd": 0.058509,
+      "decisions_usd": 6.5e-05,
+      "error": null
+    },
+    {
+      "id": "reconciliation",
+      "mode": "smart",
+      "score": 1.0,
+      "parts": {
+        "rows": 1.0,
+        "follow_up": 1.0
+      },
+      "seconds": 65.8,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ],
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 9,
+      "llm_usd": 0.00486,
+      "decisions_usd": 5.3e-05,
+      "error": null
+    },
+    {
+      "id": "incident",
+      "mode": "smart",
+      "score": 1.0,
+      "parts": {
+        "bad_version": 1.0,
+        "endpoint": 1.0,
+        "first_error": 1.0,
+        "error_rate": 1.0,
+        "root_cause": 1.0
+      },
+      "seconds": 44.6,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ]
+      ],
+      "api_calls": 6,
+      "llm_usd": 0.132246,
+      "decisions_usd": 2.7e-05,
+      "error": null,
+      "answers": [
+        "Wrote /private/var/folders/g_/2qrpbdvn1h18k__jvffr37t40000gp/T/eval-incident-fj6i9qb9/answer.json\n\nVersion 2.4.1 caused /checkout payment-gateway timeouts. First incident failure: req-002007. Post-deploy error rate: 26.6% (50 of 188 checkout requests). JSON validated."
+      ]
+    },
+    {
+      "id": "bugfix",
+      "mode": "smart",
+      "score": 1.0,
+      "parts": {
+        "hidden_tests": 1.0
+      },
+      "seconds": 146.6,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ]
+      ],
+      "api_calls": 9,
+      "llm_usd": 0.087259,
+      "decisions_usd": 2.5e-05,
+      "error": null
+    },
+    {
+      "id": "scheduling",
+      "mode": "smart",
+      "score": 1.0,
+      "parts": {
+        "first": 1.0,
+        "follow_up": 1.0
+      },
+      "seconds": 105.2,
+      "turn_models": [
+        [
+          "gpt-6.1-sol"
+        ],
+        [
+          "gpt-6.1-sol"
+        ]
+      ],
+      "api_calls": 9,
+      "llm_usd": 0.069778,
+      "decisions_usd": 7.1e-05,
+      "error": null,
+      "answers": [
+        "The earliest slot is Wednesday, 18 November 2026, 14:00\u201314:45 UTC.\n\nLocal times:\n  Anna:   15:00\u201315:45 CET\n  Ben:    09:00\u201309:45 EST\n  Chitra: 19:30\u201320:15 IST\n  Dan:    14:00\u201314:45 GMT\n\nAll four are free and within their working hours and days. Every earlier quarter-hour start within their shared working hours conflicts with a calendar event.\n\nANSWER: 2026-11-18T14:00Z",
+        " \u201cafter\u201d strictly, the next slot is Thursday, 19 November 2026, 14:00\u201314:45 UTC.\n\nLocal times:\n  Anna:   15:00\u201315:45 CET\n  Ben:    09:00\u201309:45 EST\n  Chitra: 19:30\u201320:15 IST\n  Dan:    14:00\u201314:45 GMT\n\nAll four are free and within their working hours and days.\n\nIf back-to-back is acceptable, Wednesday 14:45\u201315:30 UTC also works, but starts exactly when the first slot ends.\n\nANSWER: 2026-11-19T14:00Z"
+      ]
+    },
+    {
+      "id": "kpi_report",
+      "mode": "smart",
+      "score": 0.5,
+      "parts": {
+        "2026-07_mrr": 1.0,
+        "2026-07_churn": 0.0,
+        "2026-08_mrr": 1.0,
+        "2026-08_churn": 0.0,
+        "2026-09_mrr": 1.0,
+        "2026-09_churn": 0.0,
+        "2026-10_mrr": 1.0,
+        "2026-10_churn": 0.0
+      },
+      "seconds": 23.8,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 4,
+      "llm_usd": 0.00152,
+      "decisions_usd": 2.5e-05,
+      "error": null
+    },
+    {
+      "id": "handbook",
+      "mode": "smart",
+      "score": 1.0,
+      "parts": {
+        "q1": 1.0,
+        "q2": 1.0,
+        "q3": 1.0,
+        "q4": 1.0,
+        "q5": 1.0,
+        "q6": 1.0
+      },
+      "seconds": 114.9,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 6,
+      "llm_usd": 0.001834,
+      "decisions_usd": 2.5e-05,
+      "error": null
+    },
+    {
+      "id": "triage",
+      "mode": "smart",
+      "score": 1.0,
+      "parts": {
+        "rows": 1.0,
+        "follow_up": 1.0
+      },
+      "seconds": 105.5,
+      "turn_models": [
+        [
+          "gpt-6-luna"
+        ],
+        [
+          "gpt-6-luna"
+        ]
+      ],
+      "api_calls": 9,
+      "llm_usd": 0.002435,
+      "decisions_usd": 4.9e-05,
+      "error": null
+    }
+  ]
+}
