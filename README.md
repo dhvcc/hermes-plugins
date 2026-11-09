@@ -12,6 +12,7 @@ hermes plugins enable hermes-smart-router
 hermes auth add openai-codex          # sign in with ChatGPT; skip if already signed in
 hermes config set model.provider openai-codex
 hermes config set model.default gpt-6.1-sol
+hermes config set --force agent.reasoning_effort high   # effort for hard turns; lighter turns never go above it
 ```
 
 Restart Hermes, and the gateway if you use one, to load the plugin.
