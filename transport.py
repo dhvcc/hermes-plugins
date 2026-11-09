@@ -19,9 +19,9 @@ def install_transport(ctx, router) -> type:
     from agent.transports.codex import ResponsesApiTransport
     from hermes_constants import get_hermes_home
 
-    windows = {hermes_api.context_window(model) for model in router.settings.models}
-    if len(windows) != 1:
-        raise RuntimeError(f"routed models have different context windows: {sorted(windows)}")
+    router.pairs = [pair for pair in router.pairs if len({hermes_api.context_window(m) for m in pair}) == 1]
+    if not router.pairs:
+        raise RuntimeError("routed models have different context windows")
     native = type(get_transport(API_MODE))
     if native is not ResponsesApiTransport:
         raise RuntimeError(f"{API_MODE} transport is already replaced by {native.__module__}")

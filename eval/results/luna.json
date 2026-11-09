@@ -1,0 +1,156 @@
+{
+  "mode": "luna",
+  "effort": "xhigh",
+  "rows": [
+    {
+      "id": "OpenTDB_General Knowledge_1807",
+      "difficulty": "easy",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 6.13,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 7.6e-05,
+      "decisions_usd": 0.0,
+      "output_tokens": 26,
+      "answer_tail": "ANSWER: B",
+      "error": null
+    },
+    {
+      "id": "MedMCQA_1494",
+      "difficulty": "easy",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 8.82,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 8.2e-05,
+      "decisions_usd": 0.0,
+      "output_tokens": 38,
+      "answer_tail": "Object permanence develops during the sensorimotor stage.\n\nANSWER: A",
+      "error": null
+    },
+    {
+      "id": "MMLUPro_business_6",
+      "difficulty": "easy",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 7.71,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000107,
+      "decisions_usd": 0.0,
+      "output_tokens": 75,
+      "answer_tail": "The dimensions are customer participation and environmental relationship.\n\nANSWER: D",
+      "error": null
+    },
+    {
+      "id": "GSM8K_43",
+      "difficulty": "medium",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 5.45,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000111,
+      "decisions_usd": 0.0,
+      "output_tokens": 93,
+      "answer_tail": "You have 200 calories left. At 250 calories per 60g serving, that\u2019s 48g.\n\nANSWER: 48 grams",
+      "error": null
+    },
+    {
+      "id": "MMLUPro_engineering_10199",
+      "difficulty": "medium",
+      "mode": "luna",
+      "correct": false,
+      "seconds": 8.41,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000103,
+      "decisions_usd": 0.0,
+      "output_tokens": 71,
+      "answer_tail": "At the oscillation frequency, the Wien bridge feedback factor is 1/3.\n\nANSWER: E",
+      "error": null
+    },
+    {
+      "id": "MMLUPro_math_7758",
+      "difficulty": "medium",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 6.73,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000117,
+      "decisions_usd": 0.0,
+      "output_tokens": 94,
+      "answer_tail": "\\(\\int_0^{\\sqrt{3}} \\frac{dx}{1+x^2} = \\arctan(\\sqrt{3}) = \\frac{\\pi}{3} \\approx 1.0472.\\)\n\nANSWER: C",
+      "error": null
+    },
+    {
+      "id": "AIME_58",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 18.25,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000546,
+      "decisions_usd": 0.0,
+      "output_tokens": 958,
+      "answer_tail": "_{j=1}^{3}(1+\\alpha_j).\n\\]\nThe two products are f(1) = 3 and \u2212f(\u22121) = 1, respectively. Thus the value is 24.\n\nANSWER: 24",
+      "error": null
+    },
+    {
+      "id": "AIME_112",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 91.29,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.002589,
+      "decisions_usd": 0.0,
+      "output_tokens": 5011,
+      "answer_tail": "res total. The q = 0 values and N = 1000 are all successes, so the number of successes is 1000 \u2212 390 = 610.\n\nANSWER: 610",
+      "error": null
+    },
+    {
+      "id": "MMLUPro_law_1242",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 7.78,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.00011,
+      "decisions_usd": 0.0,
+      "output_tokens": 69,
+      "answer_tail": "f an agreed profit-sharing ratio, partners generally share profits equally, regardless of voting percentages.\n\nANSWER: I",
+      "error": null
+    },
+    {
+      "id": "MMLUPro_computer science_9414",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 6.13,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000123,
+      "decisions_usd": 0.0,
+      "output_tokens": 96,
+      "answer_tail": "itional APL, an unconditional branch is written as a right-pointing arrow followed by a line number or label.\n\nANSWER: E",
+      "error": null
+    }
+  ]
+}

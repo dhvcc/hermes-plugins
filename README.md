@@ -12,7 +12,7 @@ hermes plugins install dhvcc/hermes-smart-router
 
 The installer asks for an OpenAI API key and saves it to the profile's `.env` as `OPENAI_API_KEY`. If that isn't set, the plugin uses `VOICE_TOOLS_OPENAI_KEY`, which Hermes already uses for voice. Without a working key the plugin does nothing. Your Codex login stays with Hermes; the plugin never touches it.
 
-Then use `openai-codex` with Luna or Sol as your model.
+Then use `openai-codex` with Luna or Sol as your model. The `-900k` long-context variants work too: they are routed to each other, so both sides always have the same context window and Hermes compaction behaves as usual.
 
 The key pays for one [Decisions API](https://developers.openai.com/api/docs/guides/decisions) call per turn: $0.10 per 1M input tokens with output free, so a fraction of a cent. ChatGPT Pro and Business plans include monthly API credits that cover it.
 
@@ -53,6 +53,18 @@ Each decision is logged to `logs/agent.log`:
 ```
 smart-router: session=… tier=light (p_heavy=0.02) -> gpt-6-luna/medium, prompt~10k tokens, cheaper by $0.0136
 ```
+
+## Eval
+
+Ten [RouterArena](https://github.com/RouteWorks/RouterArena) tasks on a real Hermes agent, 2026-11-09. Details in [docs/eval.md](docs/eval.md).
+
+| Mode | Solved | Cost per task | Time per task |
+|---|---|---|---|
+| Luna only | 90% | $0.0004 | 16.7 s |
+| Sol only | 90% | $0.0048 | 11.3 s |
+| Smart router | 90% | $0.0032 | 10.5 s |
+
+![Accuracy vs cost per task](docs/eval.png)
 
 ## Tests
 

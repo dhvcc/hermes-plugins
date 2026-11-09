@@ -11,7 +11,7 @@ HELLO = [{"role": "user", "content": "hi"}]
 class RouterTests(unittest.TestCase):
     def setUp(self):
         self.clock = Clock()
-        self.models = frozenset({LUNA, SOL})
+        self.models = frozenset({LUNA, SOL, LUNA + "-900k", SOL + "-900k"})
         self.tokens = 1_000
         self.router = self.make()
 
@@ -266,6 +266,16 @@ class RouterTests(unittest.TestCase):
         self.clock.now += router_module.CLASSIFIER_COOLDOWN_S + 1
         self.turn(turn_id="t2")
         self.assertIsNone(self.plan())
+
+    def test_long_context_variant_routes_within_its_own_pair(self):
+        self.turn(model=SOL + "-900k")
+        self.assertEqual(self.plan(model=SOL + "-900k")[0], LUNA + "-900k")
+        self.assertIsNone(self.plan(model=SOL))
+        self.router.on_api_success(session_id="s", turn_id="t1", model=SOL + "-900k", response_model=LUNA,
+                                   usage={"prompt_tokens": 400_000})
+        self.assertEqual(self.router._sessions["s"].cache[LUNA + "-900k"].prefix_tokens, 400_000)
+        self.router.on_api_error(session_id="s", model=SOL + "-900k", status_code=500, error={}, request={"model": LUNA})
+        self.assertIsNone(self.plan(model=SOL + "-900k"))
 
     def test_abandon_turn(self):
         self.turn()

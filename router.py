@@ -33,6 +33,7 @@ CLASSIFIER_COOLDOWN_S = 300.0
 _UNAVAILABLE = ("model not found", "model_not_found", "unknown model", "unsupported model", "does not exist",
                 "model is not supported", "model is not available", "model unavailable", "do not have access")
 _EXHAUSTED = ("exhausted", "usage limit", "quota", "rate limit", "too many requests")
+LONG_CONTEXT_SUFFIX = "-900k"
 _TEXT_PARTS = frozenset({"text", "input_text", "output_text"})
 
 
@@ -62,6 +63,7 @@ class Session:
     turn_id: str = ""
     tier: Optional[str] = None
     p_heavy: float = 0.0
+    pair: tuple[str, ...] = ()
     turn_started: float = 0.0
     last_api_end: float = 0.0
     calls: int = 0
@@ -78,6 +80,7 @@ class Router:
                  clamp_effort: Callable[[str, str], Optional[str]] = hermes_api.clamp_effort,
                  clock: Callable[[], float] = time.monotonic) -> None:
         self.settings = settings
+        self.pairs = [settings.models, tuple(m + LONG_CONTEXT_SUFFIX for m in settings.models)]
         self._price = price
         self._catalog = catalog
         self._estimate_tokens = estimate_tokens
@@ -97,7 +100,8 @@ class Router:
                 platform: str = "", parent_session_id: str = "", conversation_history: Any = None,
                 **_: Any) -> None:
         """``pre_llm_call``: classify once per user turn. Never injects context."""
-        if not (session_id and turn_id) or parent_session_id or model not in self.settings.models:
+        pair = self._pair(model)
+        if not (session_id and turn_id and pair) or parent_session_id:
             return None
         if platform in self.settings.skip_platforms:
             return None
@@ -117,6 +121,7 @@ class Router:
             if tier:
                 session.stats.observe_tier(tier == HEAVY)
             session.turn_id, session.tier, session.p_heavy, session.turn_started = turn_id, tier, p_heavy, now
+            session.pair = pair
             session.calls, session.pin = 0, None
         return None
 
@@ -152,7 +157,7 @@ class Router:
             if pin is None or not pin.applied or pin.suspended or pin.turn_id != session.turn_id:
                 return
             wire_model = request.get("model") if isinstance(request, dict) else None
-            if wire_model and wire_model != pin.model:
+            if wire_model and wire_model != _wire(pin.model):
                 return
             pin.suspended = True
             if pin.model == model:
@@ -174,7 +179,7 @@ class Router:
         requested = dict(params.get("reasoning_config") or {})
         with self._lock:
             session = self._sessions.get(session_id)
-            if session is None or not session.tier:
+            if session is None or not session.tier or model not in session.pair:
                 return None
             pin = session.pin if session.pin and session.pin.turn_id == session.turn_id else None
         if pin is None:
@@ -198,7 +203,7 @@ class Router:
 
     def _decide(self, session_id: str, session: Session, model: str, requested: dict, prompt_tokens: int) -> Pin:
         native = Pin(session.turn_id, model, requested.get("effort"), applied=False)
-        light, heavy = self.settings.models
+        light, heavy = session.pair
         tier = session.tier
         usable = [m for m in (light, heavy) if m == model or self._available(m)]
         if tier == HEAVY or light not in usable:
@@ -243,8 +248,11 @@ class Router:
             wanted = requested
         return self._clamp_effort(model, wanted)
 
+    def _pair(self, model: str) -> tuple[str, ...]:
+        return next((pair for pair in self.pairs if model in pair), ())
+
     def _eligible(self, model: str, messages: list, params: dict) -> bool:
-        if model not in self.settings.models:
+        if not self._pair(model):
             return False
         if params.get("provider") != "openai-codex" or params.get("is_codex_backend") is not True:
             return False
@@ -268,15 +276,15 @@ class Router:
 
     def _served_model(self, session: Session, model: str, response_model: Any) -> Optional[str]:
         served = str(response_model or "")
-        for candidate in self.settings.models:
-            if served == candidate or served.startswith(candidate + "-"):
+        for candidate in session.pair:
+            if served == _wire(candidate) or served.startswith(_wire(candidate) + "-2"):
                 return candidate
         if served:
             return None
         pin = session.pin
         if pin and pin.applied and not pin.suspended and pin.turn_id == session.turn_id:
             return pin.model
-        return model if model in self.settings.models else None
+        return model if model in session.pair else None
 
     def _session(self, session_id: str, now: float) -> Session:
         """Hermes fires ``on_session_end`` after every turn, so state is evicted by idleness and count instead."""
@@ -287,6 +295,10 @@ class Router:
             self._sessions.popitem(last=False)
         self._sessions[session_id] = session
         return session
+
+
+def _wire(model: str) -> str:
+    return model.removesuffix(LONG_CONTEXT_SUFFIX)
 
 
 def _plain_message(message: Any) -> bool:

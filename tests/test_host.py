@@ -41,7 +41,8 @@ class Context:
 @unittest.skipIf(ResponsesApiTransport is None, "Hermes runtime not available")
 class TransportTests(unittest.TestCase):
     def setUp(self):
-        self.router = Router(Settings(), classify=fake_classify, catalog=lambda: frozenset({LUNA, SOL}))
+        self.router = Router(Settings(), classify=fake_classify,
+                             catalog=lambda: frozenset({LUNA, SOL, LUNA + "-900k", SOL + "-900k"}))
         self.ctx = Context()
         install_transport(self.ctx, self.router)
         self.addCleanup(self.ctx.unload)
@@ -101,6 +102,16 @@ class TransportTests(unittest.TestCase):
         image = [{"role": "user", "content": [{"type": "image_url", "image_url": {"url": "https://example.com/x.png"}}]}]
         self.assertEqual(self.build(image)["model"], SOL)
 
+    def test_long_context_variant_is_routed_and_stripped_on_the_wire(self):
+        self.router.on_turn(session_id="a", turn_id="t1", user_message="What is 2+2?", model=SOL + "-900k",
+                            platform="cli")
+        request = self.transport.build_kwargs(SOL + "-900k", [{"role": "user", "content": "hi"}], provider="openai-codex",
+                                              is_codex_backend=True, base_url="https://chatgpt.com/backend-api/codex",
+                                              session_id="a", reasoning_config={"effort": "xhigh"})
+        self.assertEqual(request["model"], LUNA)
+        normalized = self.transport.normalize_response(self.response())
+        self.assertEqual(normalized.provider_data["codex_reasoning_items"][0]["_issuer_model"], LUNA)
+
     def test_large_context_is_routed(self):
         self.turn()
         self.assertEqual(self.build([{"role": "user", "content": "x" * 400_000}])["model"], LUNA)
@@ -118,9 +129,9 @@ class TransportTests(unittest.TestCase):
 
     def test_refuses_mismatched_context_windows_and_foreign_transport(self):
         current = type(get_transport("codex_responses"))
-        with patch.object(hermes_api, "context_window", side_effect=[272_000, 128_000]):
+        with patch.object(hermes_api, "context_window", side_effect=lambda model: 900_000 if "sol" in model else 272_000):
             with self.assertRaises(RuntimeError):
-                install_transport(Context(), self.router)
+                install_transport(Context(), Router(Settings(), classify=fake_classify))
         with self.assertRaises(RuntimeError):
             install_transport(Context(), self.router)
         self.assertIs(type(get_transport("codex_responses")), current)

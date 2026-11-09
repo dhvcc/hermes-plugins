@@ -1,0 +1,156 @@
+{
+  "mode": "sol",
+  "effort": "xhigh",
+  "rows": [
+    {
+      "id": "OpenTDB_General Knowledge_1807",
+      "difficulty": "easy",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 5.27,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.001572,
+      "decisions_usd": 0.0,
+      "output_tokens": 32,
+      "answer_tail": "ANSWER: B",
+      "error": null
+    },
+    {
+      "id": "MedMCQA_1494",
+      "difficulty": "easy",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 5.79,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.002336,
+      "decisions_usd": 0.0,
+      "output_tokens": 107,
+      "answer_tail": "Object permanence develops during the sensorimotor stage (birth to about 2 years).\n\nANSWER: A",
+      "error": null
+    },
+    {
+      "id": "MMLUPro_business_6",
+      "difficulty": "easy",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 5.65,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.002472,
+      "decisions_usd": 0.0,
+      "output_tokens": 107,
+      "answer_tail": "dimensions are customer participation (passive\u2013active) and environmental relationship (absorption\u2013immersion).\n\nANSWER: D",
+      "error": null
+    },
+    {
+      "id": "GSM8K_43",
+      "difficulty": "medium",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 5.79,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.002832,
+      "decisions_usd": 0.0,
+      "output_tokens": 154,
+      "answer_tail": "ave 2000 \u2212 1800 = 200 calories left. Each serving weighs 300 \u00f7 5 = 60 g.\n\nYou can eat 200 \u00f7 250 \u00d7 60 = 48 g.\n\nANSWER: 48",
+      "error": null
+    },
+    {
+      "id": "MMLUPro_engineering_10199",
+      "difficulty": "medium",
+      "mode": "sol",
+      "correct": false,
+      "seconds": 5.29,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.002146,
+      "decisions_usd": 0.0,
+      "output_tokens": 80,
+      "answer_tail": "ANSWER: E",
+      "error": null
+    },
+    {
+      "id": "MMLUPro_math_7758",
+      "difficulty": "medium",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 6.79,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.002834,
+      "decisions_usd": 0.0,
+      "output_tokens": 144,
+      "answer_tail": "The antiderivative is arctan(x), so the integral equals arctan(\u221a3) \u2212 arctan(0) = \u03c0/3 \u2248 1.0472.\n\nANSWER: C",
+      "error": null
+    },
+    {
+      "id": "AIME_58",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 20.35,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.010712,
+      "decisions_usd": 0.0,
+      "output_tokens": 937,
+      "answer_tail": "esidues modulo 7, and \u03c9 + \u03c9\u00b2 + \u22ef + \u03c9\u2076 = \u22121.\n\nThe remaining factor is a_0 = 3, so the product is 3 \u00b7 2\u00b3 = 24.\n\nANSWER: 24",
+      "error": null
+    },
+    {
+      "id": "AIME_112",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 44.55,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.01822,
+      "decisions_usd": 0.0,
+      "output_tokens": 1655,
+      "answer_tail": "39 \u00d7 15 = 585 successes.\nFinally, N = 1000 uses 40 quarters and succeeds.\n\nThe total is 24 + 585 + 1 = 610.\n\nANSWER: 610",
+      "error": null
+    },
+    {
+      "id": "MMLUPro_law_1242",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 8.58,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.002588,
+      "decisions_usd": 0.0,
+      "output_tokens": 108,
+      "answer_tail": "location, general partners share profits equally. Unequal voting percentages do not change this default rule.\n\nANSWER: I",
+      "error": null
+    },
+    {
+      "id": "MMLUPro_computer science_9414",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 5.37,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.002786,
+      "decisions_usd": 0.0,
+      "output_tokens": 129,
+      "answer_tail": " arrow (\u2192) followed by a line number or label, such as \u219210 or \u2192LOOP. Execution jumps directly to that target.\n\nANSWER: E",
+      "error": null
+    }
+  ]
+}
