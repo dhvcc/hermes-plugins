@@ -8,6 +8,7 @@ Hard work goes to Sol. Everything else goes to Luna, which costs about 20x less 
 
 ```sh
 hermes plugins install dhvcc/hermes-smart-router
+hermes plugins enable hermes-smart-router
 hermes auth add openai-codex          # sign in with ChatGPT; skip if already signed in
 hermes config set model.provider openai-codex
 hermes config set model.default gpt-6.1-sol
