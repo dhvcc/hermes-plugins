@@ -1,0 +1,127 @@
+{
+  "mode": "smart",
+  "effort": "xhigh",
+  "tasks": "tasks_hard.json",
+  "rows": [
+    {
+      "id": "HMMT_Feb_2026_8",
+      "difficulty": "hard",
+      "mode": "smart",
+      "correct": true,
+      "seconds": 39.31,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.01415,
+      "decisions_usd": 3.3e-05,
+      "output_tokens": 1277,
+      "answer_tail": "+ 1. Adding a_2026 = 9 and using 4052 \u2261 82 gives\n\n    a_0 + \u22ef + a_2026 \u2261 353 \u2212 1 \u2212 82 + 9 = 279  (mod 397).\n\nANSWER: 279",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_10",
+      "difficulty": "hard",
+      "mode": "smart",
+      "correct": true,
+      "seconds": 34.4,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.014778,
+      "decisions_usd": 2.7e-05,
+      "output_tokens": 1353,
+      "answer_tail": "mplies (\u22127)^1013 \u2261 1 (mod p), so\n\n    S \u2261 4/(\u22127) = \u22124/7  (mod p).\n\nFinally, 7 \u00d7 289 = 2023 \u2261 \u22124 (mod 2027).\n\nANSWER: 289",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_13",
+      "difficulty": "hard",
+      "mode": "smart",
+      "correct": true,
+      "seconds": 31.29,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.010704,
+      "decisions_usd": 2.9e-05,
+      "output_tokens": 941,
+      "answer_tail": " 4 starts in position 5.\nBy symmetry, this gives another 144 orderings.\n\nThe total is 36 + 144 + 144 = 324.\n\nANSWER: 324",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_15",
+      "difficulty": "hard",
+      "mode": "smart",
+      "correct": true,
+      "seconds": 31.34,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.012696,
+      "decisions_usd": 3e-05,
+      "output_tokens": 1138,
+      "answer_tail": " values 5,6,7,8,9,10. By combinations with repetition, their number is\n    C(6 + 5 \u2212 1, 5) = C(10,5) = 252.\n\nANSWER: 252",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_17",
+      "difficulty": "hard",
+      "mode": "smart",
+      "correct": true,
+      "seconds": 195.66,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.058502,
+      "decisions_usd": 3.1e-05,
+      "output_tokens": 5717,
+      "answer_tail": "and M = S, obtained by planes outside the prism; the statement does not require both parts to be nonempty.\n\nANSWER: 1574",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_18",
+      "difficulty": "hard",
+      "mode": "smart",
+      "correct": true,
+      "seconds": 85.52,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.027192,
+      "decisions_usd": 2.8e-05,
+      "output_tokens": 2592,
+      "answer_tail": "y symmetric-sum identity, the count is\n    2(p\u2081\u00b3 \u2212 3p\u2081p\u2082 + 2p\u2083)/6\n    = (27000 \u2212 6480 + 456)/3\n    = 6992.\n\nANSWER: 6992",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_21",
+      "difficulty": "hard",
+      "mode": "smart",
+      "correct": true,
+      "seconds": 15.61,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.005422,
+      "decisions_usd": 3e-05,
+      "output_tokens": 411,
+      "answer_tail": "perpendicular distance from Y to BC is 12 \u2212 9 = 3. Therefore, the area of triangle BCY is (1/2)(12)(3) = 18.\n\nANSWER: 18",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_32",
+      "difficulty": "hard",
+      "mode": "smart",
+      "correct": true,
+      "seconds": 40.98,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.017732,
+      "decisions_usd": 3.3e-05,
+      "output_tokens": 1637,
+      "answer_tail": " M\u00b2 = 100, so M = \\boxed{10}.\n\nConversely, \u03b1 = 10 and \u03b2 = \u221210 satisfy the equation and both have modulus 10.\n\nANSWER: 10",
+      "error": null
+    }
+  ]
+}

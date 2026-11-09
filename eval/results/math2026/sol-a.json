@@ -1,0 +1,127 @@
+{
+  "mode": "sol",
+  "effort": "xhigh",
+  "tasks": "tasks_hard.json",
+  "rows": [
+    {
+      "id": "AIME_2026_11",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 58.46,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.02007,
+      "decisions_usd": 0.0,
+      "output_tokens": 1863,
+      "answer_tail": "ity holds in every triangle inequality.\n\nTherefore the maximum is 3896, whose remainder modulo 1000 is 896.\n\nANSWER: 896",
+      "error": null
+    },
+    {
+      "id": "AIME_2026_12",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 45.99,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.01847,
+      "decisions_usd": 0.0,
+      "output_tokens": 1698,
+      "answer_tail": " + (124/39)/2\n      = 1 + 7/13 + 62/39\n      = 122/39.\n\nSince 122 and 39 are relatively prime, m + n = 161.\n\nANSWER: 161",
+      "error": null
+    },
+    {
+      "id": "AIME_2026_26",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 33.71,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.015198,
+      "decisions_usd": 0.0,
+      "output_tokens": 1386,
+      "answer_tail": ", \u22124 + 2i, \u22124 \u2212 2i},\n\nwhich contains seven distinct values. Therefore the greatest possible integer is 132.\n\nANSWER: 132",
+      "error": null
+    },
+    {
+      "id": "AIME_2026_27",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 37.63,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.01566,
+      "decisions_usd": 0.0,
+      "output_tokens": 1425,
+      "answer_tail": "nsequently,\n    RS = 25/3 \u2212 75/16 = 175/48.\n\nSince 175 and 48 are relatively prime, m + n = 175 + 48 = 223.\n\nANSWER: 223",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_2",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 36.98,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.012972,
+      "decisions_usd": 0.0,
+      "output_tokens": 1174,
+      "answer_tail": " + b = 95, giving 952026.\n\nThese are in increasing order, so the second smallest is 420261 = 101 \u00d7 4161.\n\nANSWER: 420261",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_3",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 35.33,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.01342,
+      "decisions_usd": 0.0,
+      "output_tokens": 1220,
+      "answer_tail": "as six. The six largest divisors of 48 are\n\n  48, 24, 16, 12, 8, 6.\n\nThus 48 is the only qualifying integer.\n\nANSWER: 48",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_5",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 73.18,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.028,
+      "decisions_usd": 0.0,
+      "output_tokens": 2678,
+      "answer_tail": "0!) + 450 \u2261 1 + 450 = 451 \u2261 0 (mod 41).\n\nSince 30 and 41 are coprime, the expression is divisible by 1230.\n\nANSWER: 1230",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_6",
+      "difficulty": "hard",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 32.94,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.012658,
+      "decisions_usd": 0.0,
+      "output_tokens": 1130,
+      "answer_tail": " \u00b7 7 \u00b7 11 \u00b7 13 \u00b7 17 \u00b7 19 \u00b7 23.\n\nIts number of positive divisors is\n\n    (4 + 1)(3 + 1)(2 + 1) \u00b7 2\u2076 = 3840.\n\nANSWER: 3840",
+      "error": null
+    }
+  ]
+}

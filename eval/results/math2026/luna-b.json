@@ -1,0 +1,127 @@
+{
+  "mode": "luna",
+  "effort": "xhigh",
+  "tasks": "tasks_hard.json",
+  "rows": [
+    {
+      "id": "HMMT_Feb_2026_8",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 58.18,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.001539,
+      "decisions_usd": 0.0,
+      "output_tokens": 2941,
+      "answer_tail": " Also \\(y_0=1\\) and \\(2\\cdot2027\\equiv84\\pmod{397}\\). The sum is therefore \\(364-1-84\\equiv279\\pmod{397}\\).\n\nANSWER: 279",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_10",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 39.18,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.001017,
+      "decisions_usd": 0.0,
+      "output_tokens": 1910,
+      "answer_tail": "27}\\right)=1\\), so \\((-7)^{1013}\\equiv1\\pmod{2027}\\). Hence \\(4(-7)^{1012}\\equiv-4/7\\equiv289\\pmod{2027}\\).\n\nANSWER: 289",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_13",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": false,
+      "seconds": 22.09,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000593,
+      "decisions_usd": 0.0,
+      "output_tokens": 1056,
+      "answer_tail": "tions 5\u20137 must contain 5, 6, 7. This gives 3! \u00d7 3! = 36 orderings. Starting in position 5 gives another 36.\n\nANSWER: 108",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_15",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 29.83,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000553,
+      "decisions_usd": 0.0,
+      "output_tokens": 975,
+      "answer_tail": " row lengths are then determined. The number of such sequences is\n\\[\n\\binom{6+5-1}{5}=\\binom{10}{5}=252.\n\\]\n\nANSWER: 252",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_17",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": false,
+      "seconds": 136.0,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.003757,
+      "decisions_usd": 0.0,
+      "output_tokens": 7382,
+      "answer_tail": "least one of those two sets contribute 364 possibilities. Therefore the total is 2,320 + 90 + 364 = 2,774.\n\nANSWER: 2774",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_18",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 77.24,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.002141,
+      "decisions_usd": 0.0,
+      "output_tokens": 4155,
+      "answer_tail": "is counted once this way, giving 60\u00b7414 = 24,840. Therefore the required count is 31,832 \u2212 24,840 = 6,992.\n\nANSWER: 6992",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_21",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 10.2,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000288,
+      "decisions_usd": 0.0,
+      "output_tokens": 445,
+      "answer_tail": " distance from \\(Y\\) to line \\(BC\\) is \\(12-9=3\\). Thus the triangle\u2019s area is \\(\\tfrac12\\cdot12\\cdot3=18\\).\n\nANSWER: 18",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_32",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 42.51,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.001073,
+      "decisions_usd": 0.0,
+      "output_tokens": 2009,
+      "answer_tail": "qual \\(0\\), forcing \\(r=100\\).\n\nThus \\(M=10\\) is necessary, and it is attained by \\(\\alpha=10,\\ \\beta=-10\\).\n\nANSWER: 10",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "mode": "luna",
+  "effort": "xhigh",
+  "tasks": "tasks_hard.json",
+  "rows": [
+    {
+      "id": "AIME_2026_11",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 154.97,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.004311,
+      "decisions_usd": 0.0,
+      "output_tokens": 8479,
+      "answer_tail": "18) + 110 + 112\n= 2004.\n\nThe maximum M is 2(2004)\u2212112 = 3896, whose remainder upon division by 1000 is 896.\n\nANSWER: 896",
+      "error": null
+    },
+    {
+      "id": "AIME_2026_12",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 70.86,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.001919,
+      "decisions_usd": 0.0,
+      "output_tokens": 3690,
+      "answer_tail": "D}{6}+\\frac{y_D}{2}\n=1+\\frac7{13}+\\frac{62}{39}\n=\\frac{122}{39}.\n\\]\nThis is reduced, so \\(m+n=122+39=161\\).\n\nANSWER: 161",
+      "error": null
+    },
+    {
+      "id": "AIME_2026_26",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 83.75,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.00232,
+      "decisions_usd": 0.0,
+      "output_tokens": 4506,
+      "answer_tail": "on is the one from \\(a+b+c=0\\), giving exactly seven distinct sums.\n\nThe greatest valid integer is \\(132\\).\n\nANSWER: 132",
+      "error": null
+    },
+    {
+      "id": "AIME_2026_27",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 76.99,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.002075,
+      "decisions_usd": 0.0,
+      "output_tokens": 4010,
+      "answer_tail": " gives z = 75/16, so R = (0, 0, 75/16).\n\nTherefore,\nRS = 25/3 - 75/16 = 175/48,\nand m + n = 175 + 48 = 223.\n\nANSWER: 223",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_2",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 35.35,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000954,
+      "decisions_usd": 0.0,
+      "output_tokens": 1784,
+      "answer_tail": "20261.\n- ab2026: divisibility requires 10a + b = 95, giving 952026.\n\nThus the second smallest is 420261.\n\nANSWER: 420261",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_3",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 41.12,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.001146,
+      "decisions_usd": 0.0,
+      "output_tokens": 2170,
+      "answer_tail": " divisors greater than 6 are \\(8,12,16,24,48\\); 162 has six divisors greater than 6, so it does not qualify.\n\nANSWER: 48",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_5",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 56.77,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.001579,
+      "decisions_usd": 0.0,
+      "output_tokens": 3037,
+      "answer_tail": "d modulo \\(41\\) it is \\(1+450=451\\equiv0\\pmod{41}\\). Thus \\(1230\\) satisfies the condition and is maximal.\n\nANSWER: 1230",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_6",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 115.65,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.003228,
+      "decisions_usd": 0.0,
+      "output_tokens": 6320,
+      "answer_tail": "ank is lcm(1,\u2026,28), with prime exponents 4, 3, 2, and six 1s; its divisor count is 5 \u00d7 4 \u00d7 3 \u00d7 2^6 = 3840.\n\nANSWER: 3840",
+      "error": null
+    }
+  ]
+}

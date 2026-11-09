@@ -43,6 +43,7 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--mode", choices=sorted(MODELS), required=True)
     parser.add_argument("--tasks", type=Path, default=ROOT / "tasks.json")
+    parser.add_argument("--ids", default="", help="comma-separated task ids to run (default: all)")
     parser.add_argument("--effort", default="xhigh")
     parser.add_argument("--out", type=Path, required=True)
     args = parser.parse_args()
@@ -102,6 +103,9 @@ def main() -> None:
 
     runtime = resolve_runtime_provider(requested="openai-codex", target_model=MODELS[args.mode])
     tasks = json.loads(args.tasks.read_text())["tasks"]
+    if args.ids:
+        wanted = set(args.ids.split(","))
+        tasks = [task for task in tasks if task["id"] in wanted]
     rows = []
     for task in tasks:
         calls.clear()

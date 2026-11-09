@@ -56,17 +56,19 @@ smart-router: session=… tier=light (p_heavy=0.02) -> gpt-6-luna/medium, prompt
 
 ## Eval
 
-26 tasks on a real Hermes agent, run on 2026-11-09: 10 mixed [RouterArena](https://github.com/RouteWorks/RouterArena) tasks, 10 hard 2026 olympiad problems, and 6 agent tasks (email, document research, data report, debugging). Details in [docs/eval.md](docs/eval.md).
+42 tasks on a real Hermes agent, run on 2026-11-09: 10 mixed [RouterArena](https://github.com/RouteWorks/RouterArena) tasks, 26 hard 2026 olympiad problems (AIME, HMMT), and 6 agent tasks (email, document research, data report, debugging). Details in [docs/eval.md](docs/eval.md).
 
 | Mode | Solved | Cost per task | Time per task |
 |---|---|---|---|
-| Luna only | 23/26 | $0.0028 | 127 s |
-| Sol only | 25/26 | $0.0286 | 63 s |
-| Smart router | 25/26 | $0.0266 | 71 s |
+| Luna only | 37/42 | $0.0024 | 104 s |
+| Sol only | 41/42 | $0.0244 | 56 s |
+| Smart router | 41/42 | $0.0238 | 65 s |
 
-The router matched Sol's accuracy. On mixed and agent work it was 33–41% cheaper than Sol. On hard math it sent everything to Sol, so it cost about the same. Luna alone was the cheapest, but it missed two hard problems and was the slowest.
+- **Accuracy:** the router matched Sol and solved the four olympiad problems Luna missed.
+- **Speed:** Luna alone took almost twice as long as Sol on hard work. The router kept Sol's speed there and was the fastest mode on mixed and agent tasks.
+- **Cost:** 33–41% cheaper than Sol on mixed and agent work. Hard math all goes to Sol, so it costs the same; this set is 26 of the 42 tasks, which is why the totals are close.
 
-![Accuracy vs cost per task](docs/eval.png)
+![Accuracy vs cost and time, all tasks](docs/eval.png)
 
 ## Tests
 
