@@ -8,13 +8,18 @@ Hard work goes to Sol. Everything else goes to Luna, which costs about 20x less 
 
 ```sh
 hermes plugins install dhvcc/hermes-smart-router
+hermes auth add openai-codex          # sign in with ChatGPT; skip if already signed in
+hermes config set model.provider openai-codex
+hermes config set model.default gpt-6.1-sol
 ```
+
+Restart Hermes, and the gateway if you use one, to load the plugin.
 
 The installer asks for an OpenAI API key and saves it to the profile's `.env` as `OPENAI_API_KEY`. If that isn't set, the plugin uses `VOICE_TOOLS_OPENAI_KEY`, which Hermes already uses for voice. Without a working key the plugin does nothing. Your Codex login stays with Hermes; the plugin never touches it.
 
-Then use `openai-codex` with Luna or Sol as your model. The `-900k` long-context variants work too: they are routed to each other, so both sides always have the same context window and Hermes compaction behaves as usual.
-
 The key pays for one [Decisions API](https://developers.openai.com/api/docs/guides/decisions) call per turn: $0.10 per 1M input tokens with output free, so a fraction of a cent. ChatGPT Pro and Business plans include monthly API credits that cover it.
+
+For long contexts, set `model.default` to `gpt-6.1-sol-900k`. It is routed to `gpt-6-luna-900k`, so both sides always have the same context window and Hermes compaction behaves as usual.
 
 ## How it works
 
