@@ -1,0 +1,97 @@
+{
+  "mode": "luna",
+  "effort": "xhigh",
+  "tasks": "tasks_assistant.json",
+  "rows": [
+    {
+      "id": "inbox_overdue",
+      "difficulty": "agent",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 31.1,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.001864,
+      "decisions_usd": 0.0,
+      "output_tokens": 926,
+      "answer_tail": "remaining), NW-1043 (\u20ac2,760 EUR equivalent), and disputed NW-1046 (\u20ac2,150). Total: EUR 11,160.00.\n\nANSWER: EUR 11,160.00",
+      "error": null
+    },
+    {
+      "id": "inbox_meeting",
+      "difficulty": "agent",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 130.19,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.002176,
+      "decisions_usd": 0.0,
+      "output_tokens": 480,
+      "answer_tail": "ANSWER: 2026-11-19 10:30, Room Orion",
+      "error": null
+    },
+    {
+      "id": "policy_research",
+      "difficulty": "agent",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 111.18,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.002963,
+      "decisions_usd": 0.0,
+      "output_tokens": 824,
+      "answer_tail": "ement is \u20ac720 (\u20ac240 \u00d7 3 nights), and per diem is \u20ac180 (two full days plus two half-rate travel days).\n\nANSWER: 3,400 EUR",
+      "error": null
+    },
+    {
+      "id": "sales_report",
+      "difficulty": "agent",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 183.06,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.00272,
+      "decisions_usd": 0.0,
+      "output_tokens": 1596,
+      "answer_tail": "Created report.md with Q3 2026 paid revenue by region, sorted by revenue.\n\nANSWER: done",
+      "error": null
+    },
+    {
+      "id": "bugfix_tests",
+      "difficulty": "agent",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 76.59,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.002705,
+      "decisions_usd": 0.0,
+      "output_tokens": 2322,
+      "answer_tail": "ixed month-end clamping, European amount parsing, and Decimal half-up discount rounding. All 8 tests pass.\n\nANSWER: done",
+      "error": null
+    },
+    {
+      "id": "script_crash",
+      "difficulty": "agent",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 70.21,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.002564,
+      "decisions_usd": 0.0,
+      "output_tokens": 2296,
+      "answer_tail": "n calendar day. Verified it runs on events.jsonl and passes checks for timezone offsets and invalid lines.\n\nANSWER: done",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+From: Northwind Billing <billing@northwind.studio>
+To: Vandelay Team <team@vandelay.example>
+Subject: Invoice NW-1046
+Date: Thu, 15 Oct 2026 10:40:00 +0000
+Message-ID: <12.nw-1046@mail.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Hello,
+
+Invoice NW-1046 for import catalogue design.
+
+Amount: EUR 2,150.00
+Due date: 2026-10-30
+
+Northwind Billing

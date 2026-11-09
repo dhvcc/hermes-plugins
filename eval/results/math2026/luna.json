@@ -1,0 +1,157 @@
+{
+  "mode": "luna",
+  "effort": "xhigh",
+  "tasks": "tasks_hard.json",
+  "rows": [
+    {
+      "id": "AIME_2026_13",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 34.63,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000715,
+      "decisions_usd": 0.0,
+      "output_tokens": 1282,
+      "answer_tail": "r binomial coefficients are all nonzero modulo 503, so exactly \\(501-463+1=39\\) values are multiples of 503.\n\nANSWER: 39",
+      "error": null
+    },
+    {
+      "id": "AIME_2026_14",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 41.97,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.001161,
+      "decisions_usd": 0.0,
+      "output_tokens": 2187,
+      "answer_tail": "ac{676}{\\sqrt5}.\n\\]\nThe perimeter is \\(5p\\), so its square is \\(25p^2=676\\sqrt5\\). Hence \\(m+n=676+5=681\\).\n\nANSWER: 681",
+      "error": null
+    },
+    {
+      "id": "AIME_2026_15",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": false,
+      "seconds": 721.95,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.002968,
+      "decisions_usd": 0.0,
+      "output_tokens": 5769,
+      "answer_tail": "it\n\n    return sum(count(used | m, loops_left - 1) for m in best_options)\n\nprint(count(0, 5))\n```\n\nANSWER: not evaluated",
+      "error": null
+    },
+    {
+      "id": "AIME_2026_28",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 176.0,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.00491,
+      "decisions_usd": 0.0,
+      "output_tokens": 9675,
+      "answer_tail": "\u222a {214, 216, 218, 220}.\nIts block sizes are 100, 1, 1, 1, and 4, giving 101 \u00d7 2 \u00d7 2 \u00d7 2 \u00d7 5 = 4040 cousins.\n\nANSWER: 107",
+      "error": null
+    },
+    {
+      "id": "AIME_2026_29",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 72.63,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.002053,
+      "decisions_usd": 0.0,
+      "output_tokens": 3953,
+      "answer_tail": "          36\n5   2       2              1               20              20\n\nAdding the subtotals gives 157.\n\nANSWER: 157",
+      "error": null
+    },
+    {
+      "id": "AIME_2026_30",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 244.82,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.00683,
+      "decisions_usd": 0.0,
+      "output_tokens": 13509,
+      "answer_tail": "h conditions are homogeneous, so \\(v=2\\) also contributes 126.\n\nTherefore the total is \\(141+126+126=393\\).\n\nANSWER: 393",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_19",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 345.08,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.009539,
+      "decisions_usd": 0.0,
+      "output_tokens": 18931,
+      "answer_tail": "A_i\u2229A_j|=gcd(i,j). The maxima for the divisors of 250 are then 1,2,6,10,30,50,150,250, attaining the bound.\n\nANSWER: 499",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_20",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": false,
+      "seconds": 481.13,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.013381,
+      "decisions_usd": 0.0,
+      "output_tokens": 26601,
+      "answer_tail": "l columns join those routes into a single path from (0,2) to (19,0). Thus all 512 configurations are valid.\n\nANSWER: 512",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_22",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 30.34,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.000839,
+      "decisions_usd": 0.0,
+      "output_tokens": 1544,
+      "answer_tail": "\nThus the vertices are H=(0,0), O=(20,0), R=(27,7), S=(26,8), E=(0,8). The shoelace formula gives area 191.\n\nANSWER: 191",
+      "error": null
+    },
+    {
+      "id": "HMMT_Feb_2026_33",
+      "difficulty": "hard",
+      "mode": "luna",
+      "correct": true,
+      "seconds": 390.03,
+      "models": [
+        "gpt-6-luna"
+      ],
+      "llm_usd": 0.010855,
+      "decisions_usd": 0.0,
+      "output_tokens": 21578,
+      "answer_tail": "other 2024 entries with m, then replace 2m with the range m. This takes (m\u22121)+2024+1=3m\u22122=3037 operations.\n\nANSWER: 3037",
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "mode": "sol",
+  "effort": "xhigh",
+  "tasks": "tasks_assistant.json",
+  "rows": [
+    {
+      "id": "inbox_overdue",
+      "difficulty": "agent",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 44.4,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.03718,
+      "decisions_usd": 0.0,
+      "output_tokens": 1815,
+      "answer_tail": " paid, and NW-1044 as not yet due. Messages from lookalike domains and unrelated senders were ignored.\n\nANSWER: 11160.00",
+      "error": null
+    },
+    {
+      "id": "inbox_meeting",
+      "difficulty": "agent",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 22.26,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.024495,
+      "decisions_usd": 0.0,
+      "output_tokens": 412,
+      "answer_tail": "nd requests bank credentials, indicating phishing rather than a legitimate update.\n\nANSWER: 2026-11-19 10:30, Room Orion",
+      "error": null
+    },
+    {
+      "id": "policy_research",
+      "difficulty": "agent",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 39.3,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.032468,
+      "decisions_usd": 0.0,
+      "output_tokens": 1104,
+      "answer_tail": "each; departure on October 5 and return on October 8 receive 30 EUR each (docs/travel-policy-2025.md).\n\nANSWER: 3400 EUR",
+      "error": null
+    },
+    {
+      "id": "sales_report",
+      "difficulty": "agent",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 98.04,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.085504,
+      "decisions_usd": 0.0,
+      "output_tokens": 3244,
+      "answer_tail": "ders.\n\nFile: /private/var/folders/g_/2qrpbdvn1h18k__jvffr37t40000gp/T/eval-sales_report-kwc9rd03/report.md\n\nANSWER: done",
+      "error": null
+    },
+    {
+      "id": "bugfix_tests",
+      "difficulty": "agent",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 53.17,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.052112,
+      "decisions_usd": 0.0,
+      "output_tokens": 1770,
+      "answer_tail": "half-up discount rounding.\n\nAll 8 tests pass; additional edge-case checks pass. No test files were edited.\n\nANSWER: done",
+      "error": null
+    },
+    {
+      "id": "script_crash",
+      "difficulty": "agent",
+      "mode": "sol",
+      "correct": true,
+      "seconds": 119.41,
+      "models": [
+        "gpt-6.1-sol"
+      ],
+      "llm_usd": 0.074757,
+      "decisions_usd": 0.0,
+      "output_tokens": 4089,
+      "answer_tail": "4 invalid lines skipped. Added six regression tests; all pass, including under different system timezones.\n\nANSWER: done",
+      "error": null
+    }
+  ]
+}

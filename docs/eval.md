@@ -1,20 +1,28 @@
 # Eval
 
-Run on 2026-11-09. Ten tasks from [RouterArena](https://github.com/RouteWorks/RouterArena) `sub_10`: 3 easy, 3 medium, 4 hard, picked as the first auto-gradable task of each dataset/difficulty pair ([`eval/tasks.json`](../eval/tasks.json)).
-
-Each task is one turn of a real Hermes agent on the ChatGPT/Codex subscription, no tools, reasoning effort `xhigh`. **Luna only** and **Sol only** are plain Hermes. **Smart router** is Hermes on Sol with this plugin. Cost is API-equivalent USD from Hermes's official price snapshot, with Decisions API calls included. One run per task, so treat small differences as noise.
+Run on 2026-11-09. Each task is one turn of a real Hermes agent on the ChatGPT/Codex subscription, no tools, reasoning effort `xhigh`. **Luna only** and **Sol only** are plain Hermes. **Smart router** is Hermes on Sol with this plugin. Cost is API-equivalent USD from Hermes's official price snapshot, Decisions API calls included. One run per task, so small differences are noise.
 
 ![Accuracy vs cost per task](eval.png)
 
-On this set Luna at `xhigh` solved every task Sol solved, AIME included, so routing hard turns to Sol bought no extra accuracy. The router still cost a third less than Sol only and was the fastest, because light turns ran Luna at lower effort. Its value depends on tasks Luna gets wrong; a harder set is needed to measure that.
+## All tasks
 
-| Mode | Solved | Cost per task | Time per task | Turns on Sol | Easy | Medium | Hard |
-|---|---|---|---|---|---|---|---|
-| Luna only | 90% | $0.0004 | 16.7 s | 0% | 3/3 | 2/3 | 4/4 |
-| Sol only | 90% | $0.0048 | 11.3 s | 100% | 3/3 | 2/3 | 4/4 |
-| Smart router | 90% | $0.0032 | 10.5 s | 20% | 3/3 | 2/3 | 4/4 |
+| Mode | Solved | Cost per task | Time per task |
+|---|---|---|---|
+| Luna only | 23/26 | $0.0028 | 127 s |
+| Sol only | 25/26 | $0.0286 | 63 s |
+| Smart router | 25/26 | $0.0266 | 71 s |
 
-## Per task
+## Mixed: 10 RouterArena tasks
+
+Ten tasks from [RouterArena](https://github.com/RouteWorks/RouterArena) `sub_10`: 3 easy, 3 medium, 4 hard, the first auto-gradable task of each dataset/difficulty pair. Tasks: [`eval/tasks.json`](../eval/tasks.json).
+
+All three modes solved the same nine tasks. The router sent only the two AIME problems to Sol, cost a third less than Sol only and was the fastest. Luna alone was cheapest.
+
+| Mode | Solved | Cost per task | Time per task | Tasks on Sol |
+|---|---|---|---|---|
+| Luna only | 9/10 | $0.0004 | 17 s | 0/10 |
+| Sol only | 9/10 | $0.0048 | 11 s | 10/10 |
+| Smart router | 9/10 | $0.0032 | 10 s | 2/10 |
 
 | Task | Difficulty | Answer | Luna | Sol | Smart (model) |
 |---|---|---|---|---|---|
@@ -29,6 +37,52 @@ On this set Luna at `xhigh` solved every task Sol solved, AIME included, so rout
 | MMLUPro_law_1242 | hard | I | ✓ | ✓ | ✓ (6-luna) |
 | MMLUPro_computer science_9414 | hard | E | ✓ | ✓ | ✓ (6-luna) |
 
-`MMLUPro_engineering_10199`: The benchmark label is G (1/2). A Wien bridge oscillator's feedback factor is 1/3 (E), which every mode answered, so this miss is shared and says nothing about routing.
+`MMLUPro_engineering_10199`: the benchmark label is G (1/2), but a Wien bridge oscillator's feedback factor is 1/3 (E). Every mode answered E, so this miss says nothing about routing.
 
-Reproduce: `eval/run.py --mode luna|sol|smart`, then `eval/report.py`.
+## Hard: 10 olympiad problems, 2026
+
+The six last (hardest) AIME 2026 problems and four integer-answer HMMT February 2026 problems, from [MathArena](https://huggingface.co/MathArena). Tasks: [`eval/tasks_hard.json`](../eval/tasks_hard.json).
+
+Luna missed two of ten: it gave up on AIME #15 and answered HMMT #20 wrong. The router sent all ten to Sol and matched it. Its cost above Sol here is run-to-run variance in reasoning length on the same model; the Decisions calls cost under $0.0001 per task.
+
+| Mode | Solved | Cost per task | Time per task | Tasks on Sol |
+|---|---|---|---|---|
+| Luna only | 8/10 | $0.0053 | 254 s | 0/10 |
+| Sol only | 10/10 | $0.0389 | 114 s | 10/10 |
+| Smart router | 10/10 | $0.0478 | 141 s | 10/10 |
+
+| Task | Difficulty | Answer | Luna | Sol | Smart (model) |
+|---|---|---|---|---|---|
+| AIME_2026_13 | hard | 39 | ✓ | ✓ | ✓ (6.1-sol) |
+| AIME_2026_14 | hard | 681 | ✓ | ✓ | ✓ (6.1-sol) |
+| AIME_2026_15 | hard | 83 | ✗ | ✓ | ✓ (6.1-sol) |
+| AIME_2026_28 | hard | 107 | ✓ | ✓ | ✓ (6.1-sol) |
+| AIME_2026_29 | hard | 157 | ✓ | ✓ | ✓ (6.1-sol) |
+| AIME_2026_30 | hard | 393 | ✓ | ✓ | ✓ (6.1-sol) |
+| HMMT_Feb_2026_19 | hard | 499 | ✓ | ✓ | ✓ (6.1-sol) |
+| HMMT_Feb_2026_20 | hard | 20460 | ✗ | ✓ | ✓ (6.1-sol) |
+| HMMT_Feb_2026_22 | hard | 191 | ✓ | ✓ | ✓ (6.1-sol) |
+| HMMT_Feb_2026_33 | hard | 3037 | ✓ | ✓ | ✓ (6.1-sol) |
+
+## Agent: 6 assistant tasks
+
+Multi-step tool use in a throwaway folder with the terminal and file tools: totalling overdue invoices and finding a rescheduled meeting in a 17-email mailbox with a phishing look-alike, a reimbursement calculation across superseded, current and draft policy documents, a revenue report built from messy CSV/JSON data, fixing three bugs behind failing unit tests, and fixing a crashing script that is then checked on a hidden input crossing a DST change. Fixtures are in [`eval/assistant/`](../eval/assistant). Tasks: [`eval/tasks_assistant.json`](../eval/tasks_assistant.json).
+
+All modes solved all six. The router kept the two lookup-style tasks on Luna and sent the four that need calculation or code changes to Sol: 41% cheaper than Sol only and the fastest. Luna alone was cheapest and slowest.
+
+| Mode | Solved | Cost per task | Time per task | Tasks on Sol |
+|---|---|---|---|---|
+| Luna only | 6/6 | $0.0025 | 100 s | 0/6 |
+| Sol only | 6/6 | $0.0511 | 63 s | 6/6 |
+| Smart router | 6/6 | $0.0302 | 57 s | 4/6 |
+
+| Task | Difficulty | Answer | Luna | Sol | Smart (model) |
+|---|---|---|---|---|---|
+| inbox_overdue | agent | 11,160 | ✓ | ✓ | ✓ (6.1-sol) |
+| inbox_meeting | agent | 2026-11-19, 10:30, orion | ✓ | ✓ | ✓ (6-luna) |
+| policy_research | agent | 3,400 | ✓ | ✓ | ✓ (6.1-sol) |
+| sales_report | agent | report.md totals | ✓ | ✓ | ✓ (6-luna) |
+| bugfix_tests | agent | tests pass | ✓ | ✓ | ✓ (6.1-sol) |
+| script_crash | agent | hidden input output | ✓ | ✓ | ✓ (6.1-sol) |
+
+Reproduce: `eval/run.py --mode luna|sol|smart --tasks eval/<tasks>.json --out eval/results/<set>/<mode>.json`, then `eval/report.py`.

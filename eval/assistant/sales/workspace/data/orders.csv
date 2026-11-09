@@ -1,0 +1,70 @@
+order_id,customer_email,amount,currency,order_date,status
+SO-1025,li@harbor.example,243.13,USD,2026-08-20,paid
+SO-1050,eva@fjord.example,1129.44,EUR,2026-07-23,paid
+SO-1056,rita@andes.example,1057.36,EUR,2026-10-13,paid
+SO-1008,olu@lagos.example,918.87,EUR,2026-09-19,paid
+SO-1034,olu@lagos.example,2372.25,GBP,2026-09-26,cancelled
+SO-1041,  EVA@FJORD.EXAMPLE ,113.04,USD,2026-10-05,cancelled
+SO-1064,  OLU@LAGOS.EXAMPLE ,1522.35,EUR,2026-10-14,paid
+SO-1010,yuki@sakura.example,1267.68,USD,2026-10-03,paid
+SO-1004,ghost@unknown.example,1438.46,GBP,2026-10-02,paid
+SO-1037,li@harbor.example,1820.33,GBP,2026-09-26,paid
+SO-1060,marco@vetro.example,1980.03,GBP,2026-09-28,paid
+SO-1019,sam@prairie.example,431.01,USD,2026-07-03,paid
+SO-1062,  MARCO@VETRO.EXAMPLE ,2256.97,EUR,2026-09-03,paid
+SO-1011,  TOM@KIWI.EXAMPLE ,260.08,GBP,2026-09-02,paid
+SO-1046,  MARCO@VETRO.EXAMPLE ,479.84,USD,2026-10-01,paid
+SO-1030,ghost@unknown.example,1282.68,EUR,2026-06-23,cancelled
+SO-1006,ghost@unknown.example,1405.19,GBP,2026-07-04,paid
+SO-1039,  MARCO@VETRO.EXAMPLE ,430.67,USD,2026-07-05,cancelled
+SO-1009,  SAM@PRAIRIE.EXAMPLE ,1298.46,EUR,2026-06-19,refunded
+SO-1055,li@harbor.example,2376.50,USD,2026-09-16,refunded
+SO-1054,ghost@unknown.example,2128.17,EUR,2026-08-05,cancelled
+SO-1015,anna@baltic.example,1497.33,USD,2026-09-12,paid
+SO-1053,  SAM@PRAIRIE.EXAMPLE ,2161.10,USD,2026-08-26,paid
+SO-1061,  EVA@FJORD.EXAMPLE ,838.75,GBP,2026-10-16,paid
+SO-1034,olu@lagos.example,2372.25,GBP,2026-09-26,cancelled
+SO-1005,eva@fjord.example,414.67,EUR,2026-07-10,paid
+SO-1021,  JOSE@PAMPA.EXAMPLE ,2073.35,GBP,2026-08-05,cancelled
+SO-1024,marco@vetro.example,201.98,GBP,2026-06-11,paid
+SO-1059,sam@prairie.example,710.86,EUR,2026-06-03,cancelled
+SO-1045,eva@fjord.example,1294.54,USD,2026-07-18,paid
+SO-1021,  JOSE@PAMPA.EXAMPLE ,2073.35,GBP,2026-08-05,cancelled
+SO-1049,tom@kiwi.example,1108.34,USD,2026-10-01,paid
+SO-1022,anna@baltic.example,1931.07,GBP,2026-09-28,paid
+SO-1015,anna@baltic.example,1497.33,USD,2026-09-12,paid
+SO-1014,  GHOST@UNKNOWN.EXAMPLE ,740.26,EUR,2026-10-22,paid
+SO-1020,jose@pampa.example,89.50,EUR,2026-07-09,paid
+SO-1048,li@harbor.example,523.83,USD,2026-10-02,paid
+SO-1024,marco@vetro.example,201.98,GBP,2026-06-11,paid
+SO-1035,  SAM@PRAIRIE.EXAMPLE ,536.36,EUR,2026-06-08,paid
+SO-1032,sam@prairie.example,1796.51,EUR,2026-07-27,paid
+SO-1028,  YUKI@SAKURA.EXAMPLE ,454.54,GBP,2026-09-27,paid
+SO-1042,eva@fjord.example,1996.68,USD,2026-07-14,paid
+SO-1043,  YUKI@SAKURA.EXAMPLE ,836.30,GBP,2026-10-08,paid
+SO-1007,li@harbor.example,557.82,GBP,2026-10-02,paid
+SO-1029,eva@fjord.example,1340.16,GBP,2026-08-05,paid
+SO-1016,yuki@sakura.example,1003.12,USD,2026-07-24,cancelled
+SO-1031,  SAM@PRAIRIE.EXAMPLE ,844.82,GBP,2026-10-18,paid
+SO-1051,sam@prairie.example,2151.19,GBP,2026-10-09,paid
+SO-1013,  LI@HARBOR.EXAMPLE ,1620.83,GBP,2026-08-16,paid
+SO-1036,  JOSE@PAMPA.EXAMPLE ,878.10,GBP,2026-06-16,paid
+SO-1063,li@harbor.example,234.56,USD,2026-10-28,refunded
+SO-1047,  EVA@FJORD.EXAMPLE ,1282.57,GBP,2026-06-11,paid
+SO-1057,olu@lagos.example,1144.12,GBP,2026-06-11,paid
+SO-1001,olu@lagos.example,192.02,GBP,2026-07-13,refunded
+SO-1003,li@harbor.example,1998.30,USD,2026-10-14,paid
+SO-1017,marco@vetro.example,724.59,GBP,2026-09-13,paid
+SO-1002,jose@pampa.example,166.99,USD,2026-06-17,paid
+SO-1052,rita@andes.example,813.07,EUR,2026-06-13,paid
+SO-1023,li@harbor.example,224.41,EUR,2026-09-21,paid
+SO-1018,eva@fjord.example,2368.60,EUR,2026-08-23,paid
+SO-1012,olu@lagos.example,1458.94,EUR,2026-08-23,paid
+SO-1044,anna@baltic.example,1433.37,GBP,2026-08-15,cancelled
+SO-1033,  OLU@LAGOS.EXAMPLE ,1175.60,EUR,2026-06-01,paid
+SO-1058,  EVA@FJORD.EXAMPLE ,2309.00,GBP,2026-10-10,paid
+SO-1038,  GHOST@UNKNOWN.EXAMPLE ,998.35,GBP,2026-08-03,paid
+SO-1027,tom@kiwi.example,279.25,EUR,2026-09-16,paid
+SO-1007,li@harbor.example,557.82,GBP,2026-10-02,paid
+SO-1040,marco@vetro.example,2354.31,GBP,2026-10-27,paid
+SO-1026,  GHOST@UNKNOWN.EXAMPLE ,924.86,GBP,2026-08-12,paid

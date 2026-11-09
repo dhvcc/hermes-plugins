@@ -1,0 +1,88 @@
+{
+  "source": "Synthetic assistant workspaces in eval/assistant/",
+  "tasks": [
+    {
+      "id": "inbox_overdue",
+      "dataset": "assistant: email",
+      "difficulty": "agent",
+      "workspace": "inbox",
+      "prompt": "Today is 2026-11-09. The ./mail folder is an export of our mailbox (we are Northwind Studio, billing@northwind.studio) as .eml files. What is the total amount, in EUR, of client invoices that are past due and not fully paid? Count disputed invoices as outstanding, use the EUR equivalent stated on an invoice issued in another currency, and ignore anything not sent from our real domain or by our clients. End your reply with `ANSWER: <amount>`.",
+      "check": {
+        "type": "number",
+        "value": 11160,
+        "tolerance": 0.0005
+      }
+    },
+    {
+      "id": "inbox_meeting",
+      "dataset": "assistant: email",
+      "difficulty": "agent",
+      "workspace": "inbox",
+      "prompt": "Using the emails in ./mail, when and where is the November board meeting now? End your reply with `ANSWER: YYYY-MM-DD HH:MM, <room>`.",
+      "check": {
+        "type": "contains",
+        "values": [
+          "2026-11-19",
+          "10:30",
+          "orion"
+        ]
+      }
+    },
+    {
+      "id": "policy_research",
+      "dataset": "assistant: research",
+      "difficulty": "agent",
+      "workspace": "policy",
+      "prompt": "./docs has our travel policy documents. An employee flew Berlin to New York and back in business class: 2,900 EUR for the round trip, about 9 hours each way. They stayed 3 nights at 260 EUR per night, leaving on 2026-10-05 and returning on 2026-10-08. How much should we reimburse under the policy currently in force? End your reply with `ANSWER: <EUR amount>`.",
+      "check": {
+        "type": "number",
+        "value": 3400,
+        "tolerance": 0.0005
+      }
+    },
+    {
+      "id": "sales_report",
+      "dataset": "assistant: data report",
+      "difficulty": "agent",
+      "workspace": "sales",
+      "prompt": "Build report.md from the files in ./data: Q3 2026 (July to September) revenue in USD per customer region, as a markdown table sorted by revenue. Count only paid orders. A repeated order_id is a duplicate and counts once. Convert with the rate for the order's month from fx_rates.csv. Match customers to customers.json by email, ignoring case and surrounding spaces; orders from unknown customers go under the region Unknown. End your reply with `ANSWER: done`.",
+      "check": {
+        "type": "report",
+        "file": "report.md",
+        "values": {
+          "EMEA": 22092.1,
+          "APAC": 6235.09,
+          "Americas": 4647.86,
+          "Unknown": 4298.82
+        },
+        "tolerance": 0.005
+      }
+    },
+    {
+      "id": "bugfix_tests",
+      "dataset": "assistant: debugging",
+      "difficulty": "agent",
+      "workspace": "bugfix",
+      "prompt": "The invoicing package in this folder has failing tests. Fix the bugs so that `python3 -m unittest discover -s tests -t .` passes. Do not modify anything under tests/. End your reply with `ANSWER: done`.",
+      "check": {
+        "type": "unittest"
+      }
+    },
+    {
+      "id": "script_crash",
+      "dataset": "assistant: debugging",
+      "difficulty": "agent",
+      "workspace": "script",
+      "prompt": "report.py crashes on events.jsonl. Fix it so it does what its docstring says; it must also work on other event files of the same kind. End your reply with `ANSWER: done`.",
+      "check": {
+        "type": "script",
+        "command": [
+          "python3",
+          "report.py",
+          "{hidden}/events.jsonl"
+        ],
+        "expected": "{hidden}/expected.txt"
+      }
+    }
+  ]
+}

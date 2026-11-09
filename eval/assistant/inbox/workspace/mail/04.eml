@@ -1,0 +1,16 @@
+From: Northwind Billing <billing@northwind.studio>
+To: Globex Finance <finance@globex.example>
+Subject: Correction: Invoice NW-1042
+Date: Mon, 28 Sep 2026 10:20:00 +0000
+Message-ID: <04.nw-1042@mail.example>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+
+Hello again,
+
+As agreed on our call, we applied the 10% loyalty discount to NW-1042.
+Corrected amount: EUR 11,250.00. The due date stays 2026-10-15.
+Please disregard the previous amount.
+
+Northwind Billing
