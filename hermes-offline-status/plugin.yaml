@@ -1,0 +1,8 @@
+name: hermes-offline-status
+version: 0.1.0
+manifest_version: 2
+api_version: 1
+kind: standalone
+author: dhvcc
+license: MIT
+description: Replaces the gateway's "shutting down" / "back online" pings in the Telegram home chat with one silent "restarting" or "stopped" status message that exists only while Hermes is down.

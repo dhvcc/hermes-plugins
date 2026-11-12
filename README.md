@@ -1,6 +1,6 @@
 # hermes-plugins
 
-Plugins for [Hermes Agent](https://github.com/NousResearch/hermes-agent). Each folder is one plugin, installed on its own:
+Small plugins for [Hermes Agent](https://github.com/NousResearch/hermes-agent). Each one does one thing, so take only what you need.
 
 ```sh
 hermes plugins install dhvcc/hermes-plugins/<plugin>
@@ -9,21 +9,16 @@ hermes plugins enable <plugin>
 
 | Plugin | What it does |
 |---|---|
-| [hermes-smart-router](hermes-smart-router) | Per-turn routing between Luna and Sol on the ChatGPT/Codex subscription. Price- and cache-aware, 30–40% cheaper than Sol-only. |
-| [hermes-subagent-supervisor](hermes-subagent-supervisor) | Time awareness and ownership of background subagents: deadlines, silent wake-ups, last-resort stop. |
-| [hermes-subagent-widget](hermes-subagent-widget) | A pinned Telegram widget with your last subagents: progress, duration, and whether the answer reached the chat. |
-| [hermes-telegram-markdown-preprocessor](hermes-telegram-markdown-preprocessor) | Deterministic Markdown cleanup for Telegram rich messages: tables, dividers, lists and `<placeholders>` that Telegram would otherwise mangle. |
+| [hermes-smart-router](hermes-smart-router) | Picks Luna or Sol for each turn on a ChatGPT/Codex subscription. 30–40% cheaper than Sol only. |
+| [hermes-subagent-supervisor](hermes-subagent-supervisor) | The agent stops forgetting background subagents: deadlines, quiet check-ins, kills stuck ones. |
+| [hermes-subagent-widget](hermes-subagent-widget) | A pinned Telegram widget with your last subagents. |
+| [hermes-telegram-markdown-preprocessor](hermes-telegram-markdown-preprocessor) | Fixes Markdown that Telegram would break: tables, lists, `<placeholders>`. |
+| [hermes-offline-status](hermes-offline-status) | One silent "restarting" message instead of Hermes' shutdown and online pings. |
 
-Each plugin's folder has its own setup and settings.
-
-## Moved from hermes-smart-router
-
-This repo used to be `dhvcc/hermes-smart-router`. If you installed the router from the old path, reinstall it once:
+Installed the router from the old `dhvcc/hermes-smart-router` path? Reinstall it once:
 
 ```sh
 hermes plugins install --force dhvcc/hermes-plugins/hermes-smart-router
 ```
-
-## License
 
 MIT

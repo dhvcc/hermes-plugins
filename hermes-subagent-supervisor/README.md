@@ -1,24 +1,13 @@
 # hermes-subagent-supervisor
 
-Gives the agent a sense of time and makes it responsible for the background subagents it starts.
+Hermes can run subagents in the background, then forget about them. Nobody notices when one hangs, and the answer you were promised never comes. This plugin makes the agent keep track of them.
 
-Without it, an agent that runs `delegate_task` in the background forgets the task. It has no clock, nothing wakes it when a worker hangs, and nobody notices that the promised result never came.
+- Every turn, the agent sees the current time and its running subagents: how long each has run, its deadline, and the command it is stuck in.
+- Each subagent gets a deadline: `ETA: 25m` in the task, otherwise an estimate (one cheap OpenAI Decisions API call), otherwise 15 min.
+- When a subagent runs past its deadline or hangs in one command for 10+ min, the agent is woken up quietly. It gives the subagent more time, corrects it, or stops it. You see nothing unless it stopped one or your answer will be late.
+- A subagent at 3× its deadline with no progress gets stopped, and you get one line about it.
 
-## What it does
-
-- **Clock in every turn.** It adds the current time and how long ago the previous turn was. If subagents are running, it lists them with elapsed time, expected time, and the command each one is stuck in. Subagents themselves are told how long they have been running.
-- **A deadline for every task.** An explicit `ETA: 25m` in the goal wins. Otherwise one cheap [Decisions API](https://developers.openai.com/api/docs/guides/decisions) call estimates the time. Without a key, the default is 15 minutes.
-- **Silent wake-ups.** When a worker passes its deadline, runs one command for 10+ minutes, or trips Hermes' stall monitor, the plugin wakes the parent session through Hermes' own session heartbeat. The agent then has three options:
-  - give the worker more time with the `subagent_deadline` tool;
-  - correct it with `delegate_task action=steer`;
-  - stop it with `delegate_task action=stop`.
-
-  The check answers `[SILENT]`, so the user sees nothing. The agent writes to the user only if it stopped a worker, needs a decision, or the result will be much later than promised.
-- **Last-resort stop.** A worker at 3× its ETA with no progress is stopped, and the user gets one line about it.
-
-For a live view of the subagents in Telegram, add [hermes-subagent-widget](../hermes-subagent-widget). It picks up the ETAs and the "needs attention" state from this plugin.
-
-Everything runs on native Hermes pieces: the async delegation registry, the session heartbeat, plugin hooks and a tool. Nothing in Hermes is patched.
+Pair it with [hermes-subagent-widget](../hermes-subagent-widget) to see all of this in Telegram.
 
 ## Install
 
@@ -27,31 +16,24 @@ hermes plugins install dhvcc/hermes-plugins/hermes-subagent-supervisor
 hermes plugins enable hermes-subagent-supervisor
 ```
 
-The plugin wakes sessions by injecting a message, so allow that in `config.yaml`:
+It wakes the agent by injecting a message, so allow that in `config.yaml`, then restart the gateway:
 
 ```yaml
 plugins:
   entries:
     hermes-subagent-supervisor:
       allow_gateway_injection: true
-      settings:
-        language: en            # language of the stop notice: en | ru
 ```
-
-Restart the gateway.
 
 ## Settings
 
-All settings go under `plugins.entries.hermes-subagent-supervisor.settings`.
+Put these under `plugins.entries.hermes-subagent-supervisor.settings`. The defaults are fine.
 
-| Key | Default | Meaning |
+| Key | Default | |
 |---|---|---|
-| `language` | `en` | Language of the stop notice (`en`, `ru`) |
-| `default_eta_min` | `15` | ETA when none is stated and no estimate is available |
+| `default_eta_min` | `15` | Deadline when there is no ETA and no estimate |
 | `hang_alert_min` | `10` | Minutes in one command before it counts as stuck |
-| `kill_factor` | `3` | Stop a silent worker at this multiple of its ETA |
-| `decisions_url` | OpenAI Decisions API | Set to `""` to disable estimates |
-| `api_key_env` | `OPENAI_API_KEY` | Env var holding the key for `decisions_url` |
-| `decisions_model` | `gpt-6-luna` | Model for the estimate |
-
-Logs go to `<profile>/logs/subagent-supervisor.log`, and current state goes to `logs/subagent-supervisor-state.json`.
+| `kill_factor` | `3` | Stop a silent subagent at this many times its deadline |
+| `decisions_url` | OpenAI | `""` turns estimates off |
+| `api_key_env` | `OPENAI_API_KEY` | Key for the estimate |
+| `language` | `en` | `en` or `ru`, for the "stopped" message |
