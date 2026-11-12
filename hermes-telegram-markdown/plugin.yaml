@@ -1,0 +1,11 @@
+name: hermes-telegram-markdown
+version: 0.1.0
+manifest_version: 2
+api_version: 1
+kind: standalone
+author: dhvcc
+license: MIT
+description: Deterministic Markdown cleanup for Telegram rich messages. Fixes the shapes Telegram's parser silently drops or misreads (tables glued to text, setext headings from "---", lazy list/quote continuation, unclosed fences, stripped <placeholders>, dunder names, lone asterisks). No LLM, no prompt rules.
+tags: [telegram, markdown, formatting]
+provides_hooks:
+  - transform_llm_output
