@@ -19,10 +19,10 @@ from urllib.request import Request, urlopen
 from . import estimate
 from .i18n import strings
 
-log = logging.getLogger("hermes_delegation_clock")
+log = logging.getLogger("hermes_subagent_supervisor")
 
 SAMPLE_S = 5
-HB_MARK = "[delegation-clock]"
+HB_MARK = "[subagent-supervisor]"
 HB_PROMPT = (
     HB_MARK + " Internal check, invisible to the user. Look at the Active subagents block of this turn. For each "
     "flagged one: still progressing and useful -> subagent_deadline with a realistic, generous new ETA (not a "
@@ -64,7 +64,7 @@ class Track:
     children: list = field(default_factory=list)
 
 
-class Clock:
+class Supervisor:
     def __init__(self, get: Callable[[str, Any], Any], secret: Callable[[str], Optional[str]]):
         self.get, self.secret = get, secret
         self.lock = threading.Lock()
@@ -145,7 +145,7 @@ class Clock:
     # ---- supervisor loop -------------------------------------------------------------------------
     def ensure_thread(self) -> None:
         if self.thread is None or not self.thread.is_alive():
-            self.thread = threading.Thread(target=self.loop, name="delegation-clock", daemon=True)
+            self.thread = threading.Thread(target=self.loop, name="subagent-supervisor", daemon=True)
             self.thread.start()
             log.info("supervisor thread started")
 
@@ -155,7 +155,7 @@ class Clock:
                 self.manual_inject()
                 self.tick(time.time())
             except Exception:
-                log.exception("delegation-clock tick failed")
+                log.exception("subagent-supervisor tick failed")
 
     def tick(self, now: float) -> None:
         from tools.async_delegation import list_async_delegations
@@ -190,9 +190,9 @@ class Clock:
         self.dump(now, len(items))
 
     def manual_inject(self) -> None:
-        """Operator test hook: logs/delegation-clock-inject.json {session_key, text} becomes a user turn."""
+        """Operator test hook: logs/subagent-supervisor-inject.json {session_key, text} becomes a user turn."""
         from hermes_constants import get_hermes_home
-        path = get_hermes_home() / "logs" / "delegation-clock-inject.json"
+        path = get_hermes_home() / "logs" / "subagent-supervisor-inject.json"
         if not self.cfg("debug_inject", False) or not path.exists() or self.inject is None:
             return
         req = json.loads(path.read_text())
@@ -210,7 +210,7 @@ class Clock:
                         "tracks": [{"id": t.did, "parent": t.parent, "chat": t.chat, "status": t.status,
                                     "eta_min": round(t.eta / 60, 1), "eta_src": t.eta_src, "flags": t.flags,
                                     "elapsed_min": round((now - t.start) / 60, 1)} for t in self.tracks.values()]}
-            (get_hermes_home() / "logs" / "delegation-clock-state.json").write_text(json.dumps(data, ensure_ascii=False, indent=1))
+            (get_hermes_home() / "logs" / "subagent-supervisor-state.json").write_text(json.dumps(data, ensure_ascii=False, indent=1))
         except Exception:
             log.exception("dump failed")
 
@@ -239,7 +239,7 @@ class Clock:
                         api_key=key, model=str(self.cfg("decisions_model", "gpt-6-luna")), timeout=8)
                     src = "estimated"
                 except Exception as exc:
-                    log.info("delegation-clock: decisions estimate failed: %s", exc)
+                    log.info("subagent-supervisor: decisions estimate failed: %s", exc)
         if minutes:
             with self.lock:
                 if t.eta_src == "default":
@@ -287,9 +287,9 @@ class Clock:
             from tools import async_delegation as ad
             with ad._records_lock:
                 rec = ad._records.get(t.did)
-            stopped = rec is not None and ad._interrupt_records([rec], "delegation-clock", "deadline", "Stopped %d (%s)")
+            stopped = rec is not None and ad._interrupt_records([rec], "subagent-supervisor", "deadline", "Stopped %d (%s)")
         except Exception:
-            log.exception("delegation-clock: stop failed")
+            log.exception("subagent-supervisor: stop failed")
             stopped = False
         if stopped:  # called from tick, which holds the lock
             self.finish(t, "stopped", time.time())
@@ -326,12 +326,12 @@ class Clock:
             if asked and now - asked > 300 and ours:
                 self.fallback(parent, now)
         except Exception:
-            log.exception("delegation-clock: heartbeat sync failed")
+            log.exception("subagent-supervisor: heartbeat sync failed")
 
     def fallback(self, parent: str, now: float) -> None:
-        """The parent could not be woken: stay quiet in chat (hermes-subagent-board shows it red)."""
+        """The parent could not be woken: stay quiet in chat (hermes-subagent-widget shows it red)."""
         self.wakes.pop(parent, None)
-        log.info("delegation-clock: could not wake %s", parent)
+        log.info("subagent-supervisor: could not wake %s", parent)
 
     def notify(self, chat: Optional[str], text: str) -> None:
         token = self.secret("TELEGRAM_BOT_TOKEN")
@@ -342,7 +342,7 @@ class Clock:
             urlopen(Request(f"https://api.telegram.org/bot{token}/sendMessage", json.dumps(body).encode(),
                             {"Content-Type": "application/json"}), timeout=20).read()
         except Exception:
-            log.exception("delegation-clock: notify failed")
+            log.exception("subagent-supervisor: notify failed")
 
     def t(self) -> dict:
         return strings(str(self.cfg("language", "en")))

@@ -1,11 +1,11 @@
-"""Hermes Subagent Board: a pinned Telegram widget with your last background subagents."""
+"""Hermes Subagent Widget: a pinned Telegram widget with your last background subagents."""
 import logging
 import os
 from pathlib import Path
 
-from .board import Board
+from .widget import Widget
 
-log = logging.getLogger("hermes_subagent_board")
+log = logging.getLogger("hermes_subagent_widget")
 
 
 def _secret(name: str):
@@ -32,7 +32,7 @@ def _secret(name: str):
 def _file_log():
     try:
         from hermes_constants import get_hermes_home
-        path = Path(get_hermes_home()) / "logs" / "subagent-board.log"
+        path = Path(get_hermes_home()) / "logs" / "subagent-widget.log"
         if not any(getattr(h, "baseFilename", "") == str(path) for h in log.handlers):
             h = logging.FileHandler(path)
             h.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
@@ -44,6 +44,6 @@ def _file_log():
 
 def register(ctx):
     _file_log()
-    board = Board(ctx.get_config, _secret)
-    ctx.on_unload(board.stop.set)
-    board.ensure_thread()
+    widget = Widget(ctx.get_config, _secret)
+    ctx.on_unload(widget.stop.set)
+    widget.ensure_thread()

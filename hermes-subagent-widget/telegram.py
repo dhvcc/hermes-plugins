@@ -1,4 +1,4 @@
-"""Telegram side of the board: widget page, compact chat_data, Bot API calls."""
+"""Telegram side of the widget: widget page, compact chat_data, Bot API calls."""
 from __future__ import annotations
 
 import json

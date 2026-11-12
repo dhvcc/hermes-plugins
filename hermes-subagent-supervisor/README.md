@@ -1,4 +1,4 @@
-# hermes-delegation-clock
+# hermes-subagent-supervisor
 
 Gives the agent a sense of time and makes it responsible for the background subagents it starts.
 
@@ -16,15 +16,15 @@ Without it, an agent that runs `delegate_task` in the background forgets the tas
   The check answers `[SILENT]`, so the user sees nothing. The agent writes to the user only if it stopped a worker, needs a decision, or the result will be much later than promised.
 - **Last-resort stop.** A worker at 3× its ETA with no progress is stopped, and the user gets one line about it.
 
-For a live view of the subagents in Telegram, add [hermes-subagent-board](../hermes-subagent-board). It picks up the ETAs and the "needs attention" state from this plugin.
+For a live view of the subagents in Telegram, add [hermes-subagent-widget](../hermes-subagent-widget). It picks up the ETAs and the "needs attention" state from this plugin.
 
 Everything runs on native Hermes pieces: the async delegation registry, the session heartbeat, plugin hooks and a tool. Nothing in Hermes is patched.
 
 ## Install
 
 ```sh
-hermes plugins install dhvcc/hermes-plugins/hermes-delegation-clock
-hermes plugins enable hermes-delegation-clock
+hermes plugins install dhvcc/hermes-plugins/hermes-subagent-supervisor
+hermes plugins enable hermes-subagent-supervisor
 ```
 
 The plugin wakes sessions by injecting a message, so allow that in `config.yaml`:
@@ -32,7 +32,7 @@ The plugin wakes sessions by injecting a message, so allow that in `config.yaml`
 ```yaml
 plugins:
   entries:
-    hermes-delegation-clock:
+    hermes-subagent-supervisor:
       allow_gateway_injection: true
       settings:
         language: en            # language of the stop notice: en | ru
@@ -42,7 +42,7 @@ Restart the gateway.
 
 ## Settings
 
-All settings go under `plugins.entries.hermes-delegation-clock.settings`.
+All settings go under `plugins.entries.hermes-subagent-supervisor.settings`.
 
 | Key | Default | Meaning |
 |---|---|---|
@@ -54,4 +54,4 @@ All settings go under `plugins.entries.hermes-delegation-clock.settings`.
 | `api_key_env` | `OPENAI_API_KEY` | Env var holding the key for `decisions_url` |
 | `decisions_model` | `gpt-6-luna` | Model for the estimate |
 
-Logs go to `<profile>/logs/delegation-clock.log`, and current state goes to `logs/delegation-clock-state.json`.
+Logs go to `<profile>/logs/subagent-supervisor.log`, and current state goes to `logs/subagent-supervisor-state.json`.

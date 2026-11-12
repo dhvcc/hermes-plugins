@@ -1,8 +1,8 @@
-"""Live board of background subagents, one pinned Telegram widget per chat.
+"""Live view of background subagents: one pinned Telegram widget per chat, edited in place.
 
-Reads the native async-delegation registry, keeps the last finished subagents (persisted, so the board
+Reads the native async-delegation registry, keeps the last finished subagents (persisted, so the widget
 survives restarts), checks in state.db whether each answer reached the chat, and takes ETA and the
-"needs attention" flag from hermes-delegation-clock when that plugin is installed.
+"needs attention" flag from hermes-subagent-supervisor when that plugin is installed.
 """
 from __future__ import annotations
 
@@ -19,7 +19,7 @@ from typing import Any, Callable, Optional
 from . import telegram
 from .i18n import strings
 
-log = logging.getLogger("hermes_subagent_board")
+log = logging.getLogger("hermes_subagent_widget")
 
 SAMPLE_S = 5
 FINAL = {"completed": "done", "error": "error", "failed": "error", "stalled": "error",
@@ -45,7 +45,7 @@ class Unit:
     children: list = field(default_factory=list)
 
 
-class Board:
+class Widget:
     def __init__(self, get: Callable[[str, Any], Any], secret: Callable[[str], Optional[str]]):
         self.get, self.secret = get, secret
         self.lock = threading.Lock()
@@ -70,29 +70,27 @@ class Board:
         return get_hermes_home() / "logs" / name
 
     def load(self) -> None:
-        for name in ("subagent-board.json", "delegation-clock-board.json"):  # second: pre-split location
-            try:
-                data = json.loads(self._path(name).read_text())
-            except Exception:
-                continue
-            self.boards, self.history = data.get("boards") or {}, data.get("history") or {}
+        try:
+            data = json.loads(self._path("subagent-widget.json").read_text())
+        except Exception:
             return
+        self.boards, self.history = data.get("boards") or {}, data.get("history") or {}
 
     def save(self) -> None:
         try:
             with self.lock:
                 data = json.dumps({"boards": self.boards, "history": self.history}, ensure_ascii=False)
-            self._path("subagent-board.json").write_text(data)
+            self._path("subagent-widget.json").write_text(data)
         except Exception:
-            log.exception("subagent-board: save failed")
+            log.exception("subagent-widget: save failed")
 
     # ---- loop ------------------------------------------------------------------------------------
     def ensure_thread(self) -> None:
         if not self.cfg("gateway_only", True) or "gateway" in " ".join(sys.argv):
             if self.thread is None or not self.thread.is_alive():
-                self.thread = threading.Thread(target=self.loop, name="subagent-board", daemon=True)
+                self.thread = threading.Thread(target=self.loop, name="subagent-widget", daemon=True)
                 self.thread.start()
-                log.info("board thread started")
+                log.info("widget thread started")
 
     def loop(self) -> None:
         last = 0.0
@@ -103,7 +101,7 @@ class Board:
                     last = time.time()
                     self.refresh(last)
             except Exception:
-                log.exception("subagent-board tick failed")
+                log.exception("subagent-widget tick failed")
 
     def tick(self, now: float) -> None:
         from tools.async_delegation import list_async_delegations
@@ -140,7 +138,7 @@ class Board:
     def finish(self, u: Unit, status: str, now: float) -> None:
         """Caller holds the lock."""
         self.units.pop(u.did, None)
-        eta = self.clock().get(u.did, {}).get("eta", 0)
+        eta = self.supervisor().get(u.did, {}).get("eta", 0)
         rows = self.history.setdefault(u.chat, [])
         for i, c in enumerate(u.children):
             rows.append({"id": f"{u.did}:{i}", "label": c.label, "start": u.start, "end": now, "eta": eta,
@@ -157,7 +155,7 @@ class Board:
             try:
                 title = generate_title(goal, timeout=15)
             except Exception as exc:
-                log.info("subagent-board: title failed: %s", exc)
+                log.info("subagent-widget: title failed: %s", exc)
                 continue
             if not title:
                 continue
@@ -170,10 +168,10 @@ class Board:
                         r["label"] = label
 
     # ---- data from other places ------------------------------------------------------------------
-    def clock(self) -> dict:
-        """ETA and status per delegation from hermes-delegation-clock, if it runs in this profile."""
+    def supervisor(self) -> dict:
+        """ETA and status per delegation from hermes-subagent-supervisor, if it runs in this profile."""
         try:
-            data = json.loads(self._path("delegation-clock-state.json").read_text())
+            data = json.loads(self._path("subagent-supervisor-state.json").read_text())
             if time.time() - float(data.get("at") or 0) > 120:
                 return {}
             return {t["id"]: {"eta": float(t.get("eta_min") or 0) * 60, "status": t.get("status")}
@@ -207,7 +205,7 @@ class Board:
             finally:
                 db.close()
         except Exception:
-            log.exception("subagent-board: reply lookup failed")
+            log.exception("subagent-widget: reply lookup failed")
         return changed
 
     # ---- render ----------------------------------------------------------------------------------
@@ -218,12 +216,12 @@ class Board:
         lang = str(self.cfg("language", "en"))
         tg = telegram.Telegram(token, lang)
         dirty = self.replies(now)
-        clock = self.clock()
+        sup = self.supervisor()
         hang = float(self.cfg("hang_alert_min", 10)) * 60
         with self.lock:
             rows_by: dict[str, list] = {}
             for u in sorted(self.units.values(), key=lambda x: x.start, reverse=True):
-                info = clock.get(u.did, {})
+                info = sup.get(u.did, {})
                 for c in u.children:
                     stuck = c.tool and now - c.tool_since > hang
                     rows_by.setdefault(u.chat, []).append({
@@ -255,7 +253,7 @@ class Board:
                     continue
                 self.sent[chat] = data
             except Exception:
-                log.exception("subagent-board: widget failed")
+                log.exception("subagent-widget: widget failed")
         if dirty:
             self.save()
 

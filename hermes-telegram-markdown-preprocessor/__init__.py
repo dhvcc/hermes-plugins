@@ -1,9 +1,9 @@
-"""Hermes Telegram Markdown: make LLM Markdown parse the way it reads in Telegram rich messages."""
+"""Hermes Telegram Markdown Preprocessor: make LLM Markdown parse the way it reads in Telegram rich messages."""
 import logging
 
 from .tgmd import normalize
 
-log = logging.getLogger("hermes_telegram_markdown")
+log = logging.getLogger("hermes_telegram_markdown_preprocessor")
 
 
 def register(ctx):
@@ -25,7 +25,7 @@ def register(ctx):
         try:
             fixed = normalize(response_text)
         except Exception:
-            log.exception("telegram-markdown: normalize failed, sending original")
+            log.exception("telegram-markdown-preprocessor: normalize failed, sending original")
             return None
         return fixed if fixed != response_text else None
 

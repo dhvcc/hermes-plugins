@@ -1,4 +1,4 @@
-name: hermes-telegram-markdown
+name: hermes-telegram-markdown-preprocessor
 version: 0.1.0
 manifest_version: 2
 api_version: 1

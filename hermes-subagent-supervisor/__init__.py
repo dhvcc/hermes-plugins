@@ -1,18 +1,18 @@
-"""Hermes Delegation Clock: time awareness and delegation accountability on native Hermes pieces."""
+"""Hermes Subagent Supervisor: time awareness and delegation accountability on native Hermes pieces."""
 import logging
 import os
 from pathlib import Path
 
-from .clock import Clock
+from .supervisor import Supervisor
 
-log = logging.getLogger("hermes_delegation_clock")
+log = logging.getLogger("hermes_subagent_supervisor")
 
 DEADLINE_SCHEMA = {
     "name": "subagent_deadline",
     "description": ("Re-plan the expected finish time of one of your running background subagents after you "
-                    "checked it and decided to let it continue. The clock wakes you again when the new "
+                    "checked it and decided to let it continue. The supervisor wakes you again when the new "
                     "deadline passes. Tip: when you know the wall-clock time of a task (a CI run, a deploy), "
-                    "write `ETA: <N>m` in the delegate_task goal; otherwise the clock estimates it."),
+                    "write `ETA: <N>m` in the delegate_task goal; otherwise the supervisor estimates it."),
     "parameters": {
         "type": "object",
         "properties": {
@@ -49,7 +49,7 @@ def _secret(name: str):
 def _file_log():
     try:
         from hermes_constants import get_hermes_home
-        path = Path(get_hermes_home()) / "logs" / "delegation-clock.log"
+        path = Path(get_hermes_home()) / "logs" / "subagent-supervisor.log"
         if not any(getattr(h, "baseFilename", "") == str(path) for h in log.handlers):
             h = logging.FileHandler(path)
             h.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
@@ -62,10 +62,10 @@ def _file_log():
 def register(ctx):
     _file_log()
     log.info("registered in pid %s", os.getpid())
-    clock = Clock(ctx.get_config, _secret)
-    clock.inject = lambda text, key: ctx.inject_message(text, session_key=key)
-    ctx.register_hook("pre_llm_call", clock.on_turn)
+    sup = Supervisor(ctx.get_config, _secret)
+    sup.inject = lambda text, key: ctx.inject_message(text, session_key=key)
+    ctx.register_hook("pre_llm_call", sup.on_turn)
     ctx.register_tool(name="subagent_deadline", toolset="delegation", schema=DEADLINE_SCHEMA,
-                      handler=clock.deadline, description=DEADLINE_SCHEMA["description"], emoji="⏰")
-    ctx.on_unload(clock.stop.set)
-    clock.ensure_thread()
+                      handler=sup.deadline, description=DEADLINE_SCHEMA["description"], emoji="⏰")
+    ctx.on_unload(sup.stop.set)
+    sup.ensure_thread()

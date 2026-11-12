@@ -1,4 +1,4 @@
-# hermes-telegram-markdown
+# hermes-telegram-markdown-preprocessor
 
 Fixes LLM Markdown before Hermes sends it to Telegram as a rich message. It runs as plain code (no LLM call, no prompt rules) and takes about 0.03 ms per reply.
 
@@ -22,11 +22,11 @@ Code spans, fenced code and URLs are never touched. The output is idempotent.
 ## Install
 
 ```sh
-hermes plugins install dhvcc/hermes-plugins/hermes-telegram-markdown
-hermes plugins enable hermes-telegram-markdown
+hermes plugins install dhvcc/hermes-plugins/hermes-telegram-markdown-preprocessor
+hermes plugins enable hermes-telegram-markdown-preprocessor
 ```
 
-Restart the gateway. It applies only to `platform: telegram`. You can change that with `plugins.entries.hermes-telegram-markdown.settings.platforms: [telegram, ...]`.
+Restart the gateway. It applies only to `platform: telegram`. You can change that with `plugins.entries.hermes-telegram-markdown-preprocessor.settings.platforms: [telegram, ...]`.
 
 ## Tests
 

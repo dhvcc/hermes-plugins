@@ -1,4 +1,4 @@
-"""Board strings. Set settings.language: en | ru."""
+"""Widget strings. Set settings.language: en | ru."""
 STRINGS = {
     "en": {"caption": "Subagents", "min": "min", "left": "~{n} min left", "since": "since", "of": "of ~",
            "done": "done", "error": "error", "stopped": "stopped", "no_reply": "no reply", "reply": "replied",
