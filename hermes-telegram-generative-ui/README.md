@@ -5,7 +5,7 @@ Your agent draws charts, tables and status cards right in the Telegram chat, as 
 Two tools:
 
 - `ui_preview` renders the page in headless Chrome at phone width and returns a screenshot, the content height, the size against Telegram's limit, script errors and anything the widget sandbox won't run. The agent looks at it and fixes the page.
-- `ui_render` sends it to the current chat above the reply. `as_image=true` sends a screenshot instead, for reports that are too big or too tall for a widget. Group chats always get the image.
+- `ui_render` sends it to the current chat as a widget, above the reply.
 
 The page gets theme variables (`--foreground`, `--card`, `--chart-1`…) mapped to the user's Telegram theme, so it looks right in light and dark.
 
@@ -22,7 +22,7 @@ hermes plugins install dhvcc/hermes-plugins/hermes-telegram-generative-ui
 hermes plugins enable hermes-telegram-generative-ui
 ```
 
-Needs `TELEGRAM_BOT_TOKEN` and Chrome or Chromium for previews and images. Hermes' own browser is picked up if configured; otherwise set it:
+Needs `TELEGRAM_BOT_TOKEN` and Chrome or Chromium for previews. Hermes' own browser is picked up if configured; otherwise set it:
 
 ```yaml
 plugins:

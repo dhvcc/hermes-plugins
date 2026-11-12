@@ -5,5 +5,5 @@ api_version: 1
 kind: standalone
 author: dhvcc
 license: MIT
-description: The agent draws charts, tables and status cards right in the Telegram chat as live widgets, checks them on a screenshot first, and falls back to an image for big reports.
+description: The agent draws charts, tables and status cards right in the Telegram chat as live widgets, and checks each one on a screenshot before sending it.
 tags: [telegram, widget, ui, charts]

@@ -111,7 +111,7 @@ def _run(exe: str, args: list[str], timeout: int = 40) -> subprocess.CompletedPr
                               capture_output=True, text=True, timeout=timeout)
 
 
-def shoot(doc: str, width: int, scheme: str, exe: str, clip: bool = True) -> dict:
+def shoot(doc: str, width: int, scheme: str, exe: str) -> dict:
     """Render once to measure, once to screenshot. Returns height, nodes, errors, png bytes."""
     with tempfile.TemporaryDirectory() as tmp:
         src = Path(tmp) / "w.html"
@@ -122,7 +122,7 @@ def shoot(doc: str, width: int, scheme: str, exe: str, clip: bool = True) -> dic
         height = int(attr("h") or 0)
         nodes = int(attr("n") or 0)
         errors = [e for e in _html.unescape(attr("e")).split(" | ") if e]
-        shot_h = max(50, min(height, MAX_H) if clip else min(height, 4000))
+        shot_h = max(50, min(height, MAX_H))
         out = Path(tmp) / "w.png"
         _run(exe, [f"--window-size={width},{shot_h}", f"--screenshot={out}", url])
         png = out.read_bytes() if out.exists() else b""

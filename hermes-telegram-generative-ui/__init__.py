@@ -5,7 +5,6 @@ import base64
 import json
 import logging
 import os
-import uuid
 from pathlib import Path
 from urllib.request import Request, urlopen
 
@@ -40,14 +39,13 @@ PREVIEW_SCHEMA = {
 RENDER_SCHEMA = {
     "name": "ui_render",
     "description": ("Show a finished page (chart, table, status card, small dashboard, mockup) in this Telegram "
-                    "chat, above your final reply. Answer data with a trend or comparison with a chart. Do not "
-                    "announce or restate what it shows. Check it with ui_preview first. Sent as a live widget; "
-                    "pass as_image=true for a static report that is too big or too tall for one. " + RULES + " "
+                    "chat as a live widget, above your final reply. Answer data with a trend or comparison with a "
+                    "chart. Do not announce or restate what it shows. Check it with ui_preview first. If it does "
+                    "not fit, cut it down: fewer points, rows and styles. " + RULES + " "
                     + THEME),
     "parameters": {"type": "object", "properties": {
         "html": {"type": "string", "description": "Body HTML, the same you previewed"},
         "title": {"type": "string", "description": "Short caption under it, optional"},
-        "as_image": {"type": "boolean", "description": "Send a screenshot instead of a widget"},
     }, "required": ["html"]},
 }
 
@@ -79,21 +77,11 @@ def _session(name: str) -> str:
         return os.environ.get(name, "")
 
 
-def _api(method: str, fields: dict, files: dict | None = None) -> dict:
+def _api(method: str, fields: dict) -> dict:
     url = f"https://api.telegram.org/bot{_secret('TELEGRAM_BOT_TOKEN')}/{method}"
-    if files:
-        b = uuid.uuid4().hex
-        parts = []
-        for k, v in fields.items():
-            parts.append(f'--{b}\r\nContent-Disposition: form-data; name="{k}"\r\n\r\n{v}\r\n'.encode())
-        for k, (fname, data, ctype) in files.items():
-            parts.append(f'--{b}\r\nContent-Disposition: form-data; name="{k}"; filename="{fname}"\r\n'
-                         f"Content-Type: {ctype}\r\n\r\n".encode() + data + b"\r\n")
-        body, ctype = b"".join(parts) + f"--{b}--\r\n".encode(), f"multipart/form-data; boundary={b}"
-    else:
-        body, ctype = json.dumps(fields).encode(), "application/json"
+    req = Request(url, data=json.dumps(fields).encode(), headers={"Content-Type": "application/json"})
     try:
-        with urlopen(Request(url, data=body, headers={"Content-Type": ctype}), timeout=30) as r:
+        with urlopen(req, timeout=30) as r:
             return json.loads(r.read())
     except Exception as exc:
         try:
@@ -134,7 +122,7 @@ def register(ctx):
         if shot["nodes"] > render.MAX_NODES:
             info["issues"].append(f"{shot['nodes']} nodes, limit {render.MAX_NODES}")
         if not info["fits"]:
-            info["issues"].append(f"{info['bytes_zlib']} bytes after zlib, limit {render.MAX_ZIP}: shrink it or use as_image")
+            info["issues"].append(f"{info['bytes_zlib']} bytes after zlib, limit {render.MAX_ZIP}: shrink it")
         text = json.dumps(info)
         if not shot["png"]:
             return text
@@ -155,31 +143,18 @@ def register(ctx):
         base = {"chat_id": chat, "disable_notification": True}
         if thread:
             base["message_thread_id"] = thread
-        private = _session("HERMES_SESSION_CHAT_TYPE") in ("", "dm", "private")
-        as_image = bool(args.get("as_image")) or not private
-        if not as_image:
-            info = report(doc)
-            if not info["fits"]:
-                return json.dumps({"ok": False, "error": f"{info['bytes_zlib']} bytes after zlib, limit "
-                                   f"{render.MAX_ZIP}. Shrink it (fewer points, shorter CSS) or pass as_image=true."})
-            res = _api("sendWidget", {**base, "html": doc, **({"caption": title} if title else {})})
-            if res.get("ok"):
-                return json.dumps({"ok": True, "message_id": res["result"]["message_id"],
-                                   "note": "Shown above your reply. Do not restate it."})
-            log.warning("sendWidget failed: %s", res.get("description"))
-            return json.dumps({"ok": False, "error": res.get("description") or "sendWidget failed"})
-        exe = render.chrome(exe_cfg)
-        if not exe:
-            return json.dumps({"ok": False, "error": "no Chrome/Chromium for as_image; set chrome_path"})
-        shot = render.shoot(doc, 420, "dark", exe, clip=False)
-        if not shot["png"]:
-            return json.dumps({"ok": False, "error": "screenshot failed"})
-        res = _api("sendPhoto", {**base, **({"caption": title} if title else {})},
-                   files={"photo": ("ui.png", shot["png"], "image/png")})
+        if _session("HERMES_SESSION_CHAT_TYPE") not in ("", "dm", "private"):
+            return json.dumps({"ok": False, "error": "Telegram widgets work only in the private chat with the bot"})
+        info = report(doc)
+        if not info["fits"]:
+            return json.dumps({"ok": False, "error": f"{info['bytes_zlib']} bytes after zlib, limit "
+                               f"{render.MAX_ZIP}. Shrink it: fewer points, rows and styles."})
+        res = _api("sendWidget", {**base, "html": doc, **({"caption": title} if title else {})})
         if res.get("ok"):
             return json.dumps({"ok": True, "message_id": res["result"]["message_id"],
-                               "note": "Shown above your reply as an image. Do not restate it."})
-        return json.dumps({"ok": False, "error": res.get("description") or "sendPhoto failed"})
+                               "note": "Shown above your reply. Do not restate it."})
+        log.warning("sendWidget failed: %s", res.get("description"))
+        return json.dumps({"ok": False, "error": res.get("description") or "sendWidget failed"})
 
     ctx.register_tool(name="ui_preview", toolset="ui", schema=PREVIEW_SCHEMA, handler=preview,
                       description=PREVIEW_SCHEMA["description"], emoji="🖼")
