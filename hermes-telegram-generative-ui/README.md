@@ -2,16 +2,25 @@
 
 Your agent draws charts, tables and status cards right in the Telegram chat, as live [bot widgets](https://core.telegram.org/bots/widgets).
 
-Two tools:
+<p>
+<img src="examples/signups.png" width="300" alt="Line chart widget">
+<img src="examples/deploys.png" width="300" alt="Deploy status widget">
+<img src="examples/builds.png" width="300" alt="Bar chart widget">
+</p>
 
-- `ui_preview` renders the page in headless Chrome at phone width and returns a screenshot, the content height, the size against Telegram's limit, script errors and anything the widget sandbox won't run. The agent looks at it and fixes the page.
-- `ui_render` sends it to the current chat as a widget, above the reply.
+Sources for these are in [examples](examples).
+
+## How it works
+
+One tool, `ui_render`. The agent writes a small HTML page and the plugin sends it to the current chat as a widget, above the reply. The tool description teaches the model the widget rules, and the agent is told to answer data with a trend or comparison with a chart.
 
 The page gets theme variables (`--foreground`, `--card`, `--chart-1`…) mapped to the user's Telegram theme, so it looks right in light and dark.
 
+Before sending, the plugin checks the page against Telegram's limits and the widget sandbox. If something would fail or be silently dropped (too big, `fetch`, external images, `<input>`, `vh` units…), nothing is sent and the agent gets the reason, so it fixes the page and tries again.
+
 ## Limits worth knowing
 
-Widgets run in a sandbox, not a browser: 4096 bytes after zlib, 600px tall, no network, no external assets, only `<button>` as a control. The tool descriptions tell the model all of this.
+Widgets run in a sandbox, not a browser: 4096 bytes after zlib, 600px tall, no network, no external assets, only `<button>` as a control.
 
 Widgets work only in the private chat with the bot. Older Telegram apps show just the caption.
 
@@ -22,12 +31,4 @@ hermes plugins install dhvcc/hermes-plugins/hermes-telegram-generative-ui
 hermes plugins enable hermes-telegram-generative-ui
 ```
 
-Needs `TELEGRAM_BOT_TOKEN` and Chrome or Chromium for previews. Hermes' own browser is picked up if configured; otherwise set it:
-
-```yaml
-plugins:
-  entries:
-    hermes-telegram-generative-ui:
-      settings:
-        chrome_path: /usr/bin/chromium
-```
+Needs `TELEGRAM_BOT_TOKEN`.

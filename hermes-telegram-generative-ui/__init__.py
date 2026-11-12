@@ -1,7 +1,6 @@
 """Hermes Telegram Generative UI: the agent draws charts, tables and cards as Telegram widgets."""
 from __future__ import annotations
 
-import base64
 import json
 import logging
 import os
@@ -24,27 +23,15 @@ THEME = ("Use CSS variables, not fixed colors: --foreground, --muted-foreground,
          "--radius, --font-sans, --font-mono. The base sheet sets text color, font and padding; give body and "
          "the outer element no background, border, outer card or banner title.")
 
-PREVIEW_SCHEMA = {
-    "name": "ui_preview",
-    "description": ("Check a widget page before ui_render. Returns a phone-width PNG, content height, size against "
-                    "the 4096-byte limit, script errors and unsupported features. Fix what it reports, then "
-                    "ui_render. " + RULES),
-    "parameters": {"type": "object", "properties": {
-        "html": {"type": "string", "description": "Body HTML"},
-        "width": {"type": "integer", "description": "CSS pixels, default 380"},
-        "appearance": {"type": "string", "enum": ["dark", "light"], "description": "Default dark"},
-    }, "required": ["html"]},
-}
-
 RENDER_SCHEMA = {
     "name": "ui_render",
     "description": ("Show a finished page (chart, table, status card, small dashboard, mockup) in this Telegram "
                     "chat as a live widget, above your final reply. Answer data with a trend or comparison with a "
-                    "chart. Do not announce or restate what it shows. Check it with ui_preview first. If it does "
-                    "not fit, cut it down: fewer points, rows and styles. " + RULES + " "
+                    "chart. Do not announce or restate what it shows. Anything the widget would break is refused "
+                    "with the reason; fix it and call again. " + RULES + " "
                     + THEME),
     "parameters": {"type": "object", "properties": {
-        "html": {"type": "string", "description": "Body HTML, the same you previewed"},
+        "html": {"type": "string", "description": "Body HTML"},
         "title": {"type": "string", "description": "Short caption under it, optional"},
     }, "required": ["html"]},
 }
@@ -91,46 +78,6 @@ def _api(method: str, fields: dict) -> dict:
 
 
 def register(ctx):
-    cfg = {}
-    try:
-        cfg = (ctx.get_config() or {}).get("settings") or {}
-    except Exception:
-        pass
-    exe_cfg = cfg.get("chrome_path")
-
-    def report(doc: str) -> dict:
-        raw, zipped = render.sizes(doc)
-        return {"bytes_zlib": zipped, "limit_zlib": render.MAX_ZIP, "bytes_raw": raw,
-                "fits": raw <= render.MAX_RAW and zipped <= render.MAX_ZIP, "issues": render.lint(doc)}
-
-    def preview(args: dict, **_) -> object:
-        body = str(args.get("html") or "")
-        doc = render.page(body)
-        info = report(doc)
-        exe = render.chrome(exe_cfg)
-        if not exe:
-            info["note"] = "No Chrome/Chromium found, so no screenshot. Set chrome_path in the plugin settings."
-            return json.dumps(info)
-        try:
-            shot = render.shoot(doc, int(args.get("width") or 380), args.get("appearance") or "dark", exe)
-        except Exception as exc:
-            info["note"] = f"screenshot failed: {exc}"
-            return json.dumps(info)
-        info.update(content_height=shot["height"], nodes=shot["nodes"], script_errors=shot["errors"])
-        if shot["height"] > render.MAX_H:
-            info["issues"].append(f"{shot['height']}px tall, everything past {render.MAX_H}px is clipped")
-        if shot["nodes"] > render.MAX_NODES:
-            info["issues"].append(f"{shot['nodes']} nodes, limit {render.MAX_NODES}")
-        if not info["fits"]:
-            info["issues"].append(f"{info['bytes_zlib']} bytes after zlib, limit {render.MAX_ZIP}: shrink it")
-        text = json.dumps(info)
-        if not shot["png"]:
-            return text
-        url = "data:image/png;base64," + base64.b64encode(shot["png"]).decode()
-        return {"_multimodal": True,
-                "content": [{"type": "text", "text": text}, {"type": "image_url", "image_url": {"url": url}}],
-                "text_summary": text}
-
     def show(args: dict, **_) -> str:
         if _session("HERMES_SESSION_PLATFORM") != "telegram":
             return json.dumps({"ok": False, "error": "ui_render works only in a Telegram chat"})
@@ -145,10 +92,9 @@ def register(ctx):
             base["message_thread_id"] = thread
         if _session("HERMES_SESSION_CHAT_TYPE") not in ("", "dm", "private"):
             return json.dumps({"ok": False, "error": "Telegram widgets work only in the private chat with the bot"})
-        info = report(doc)
-        if not info["fits"]:
-            return json.dumps({"ok": False, "error": f"{info['bytes_zlib']} bytes after zlib, limit "
-                               f"{render.MAX_ZIP}. Shrink it: fewer points, rows and styles."})
+        issues = render.check(doc)
+        if issues:
+            return json.dumps({"ok": False, "error": "Not sent, fix and retry: " + "; ".join(issues)})
         res = _api("sendWidget", {**base, "html": doc, **({"caption": title} if title else {})})
         if res.get("ok"):
             return json.dumps({"ok": True, "message_id": res["result"]["message_id"],
@@ -156,7 +102,5 @@ def register(ctx):
         log.warning("sendWidget failed: %s", res.get("description"))
         return json.dumps({"ok": False, "error": res.get("description") or "sendWidget failed"})
 
-    ctx.register_tool(name="ui_preview", toolset="ui", schema=PREVIEW_SCHEMA, handler=preview,
-                      description=PREVIEW_SCHEMA["description"], emoji="🖼")
     ctx.register_tool(name="ui_render", toolset="ui", schema=RENDER_SCHEMA, handler=show,
                       description=RENDER_SCHEMA["description"], emoji="🖼")
