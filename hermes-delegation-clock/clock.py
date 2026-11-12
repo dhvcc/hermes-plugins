@@ -6,17 +6,17 @@ restart interrupts background delegations anyway.
 """
 from __future__ import annotations
 
-import hashlib
 import json
 import logging
-import sqlite3
 import threading
 import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Callable, Optional
 
-from . import board, estimate
+from urllib.request import Request, urlopen
+
+from . import estimate
 from .i18n import strings
 
 log = logging.getLogger("hermes_delegation_clock")
@@ -71,46 +71,13 @@ class Clock:
         self.tracks: dict[str, Track] = {}
         self.last_turn: dict[str, float] = {}
         self.first_turn: dict[str, float] = {}
-        self.boards: dict[str, dict] = {}
         self.wakes: dict[str, float] = {}
         self.thread: Optional[threading.Thread] = None
         self.stop = threading.Event()
         self.inject: Optional[Callable[[str, str], bool]] = None
-        self.history: dict[str, list] = {}
-        self.sent_data: dict[str, str] = {}
-        self.load()
-
-    # ---- persistence: board message ids and finished subagents survive restarts ------------------
-    def _path(self, name: str):
-        from hermes_constants import get_hermes_home
-        return get_hermes_home() / "logs" / name
-
-    def load(self) -> None:
-        try:
-            data = json.loads(self._path("delegation-clock-board.json").read_text())
-            self.boards, self.history = data.get("boards") or {}, data.get("history") or {}
-        except Exception:
-            pass
-
-    def save(self) -> None:
-        try:
-            with self.lock:
-                data = json.dumps({"boards": self.boards, "history": self.history}, ensure_ascii=False)
-            self._path("delegation-clock-board.json").write_text(data)
-        except Exception:
-            log.exception("delegation-clock: save failed")
 
     def finish(self, t: Track, status: str, now: float) -> None:
-        """Caller holds the lock. Keep finished subagents on the board until newer ones push them off."""
         t.status, t.ended = status, now
-        if not t.chat:
-            return
-        keep = int(self.cfg("board_rows", 6)) * 2
-        rows = self.history.setdefault(t.chat, [])
-        for i, c in enumerate(t.children):
-            rows.append({"id": f"{t.did}:{i}", "label": c.label, "start": t.start, "end": now, "eta": t.eta,
-                         "status": status, "key": t.key, "parent": t.parent, "reply": None})
-        del rows[:-keep]
 
     def cfg(self, key: str, default: Any) -> Any:
         try:
@@ -161,7 +128,6 @@ class Clock:
 
     # ---- tool: re-plan a deadline ----------------------------------------------------------------
     def deadline(self, args: dict, **_: Any) -> str:
-        import json
         did, minutes = str(args.get("delegation_id") or ""), float(args.get("minutes") or 0)
         with self.lock:
             t = self.tracks.get(did)
@@ -184,14 +150,10 @@ class Clock:
             log.info("supervisor thread started")
 
     def loop(self) -> None:
-        last_board = 0.0
         while not self.stop.wait(SAMPLE_S):
             try:
                 self.manual_inject()
                 self.tick(time.time())
-                if time.time() - last_board >= float(self.cfg("board_every_s", 60)):
-                    last_board = time.time()
-                    self.refresh_boards(last_board)
             except Exception:
                 log.exception("delegation-clock tick failed")
 
@@ -229,7 +191,6 @@ class Clock:
 
     def manual_inject(self) -> None:
         """Operator test hook: logs/delegation-clock-inject.json {session_key, text} becomes a user turn."""
-        import json
         from hermes_constants import get_hermes_home
         path = get_hermes_home() / "logs" / "delegation-clock-inject.json"
         if not self.cfg("debug_inject", False) or not path.exists() or self.inject is None:
@@ -243,13 +204,12 @@ class Clock:
         if not seen and not self.tracks:
             return
         try:
-            import json
             from hermes_constants import get_hermes_home
             with self.lock:
-                data = {"at": now, "registry_items": seen, "wakes": self.wakes, "boards": self.boards,
+                data = {"at": now, "registry_items": seen, "wakes": self.wakes,
                         "tracks": [{"id": t.did, "parent": t.parent, "chat": t.chat, "status": t.status,
                                     "eta_min": round(t.eta / 60, 1), "eta_src": t.eta_src, "flags": t.flags,
-                                    "elapsed_min": round((now - t.start) / 60, 1), "titles": [c.label for c in t.children]} for t in self.tracks.values()]}
+                                    "elapsed_min": round((now - t.start) / 60, 1)} for t in self.tracks.values()]}
             (get_hermes_home() / "logs" / "delegation-clock-state.json").write_text(json.dumps(data, ensure_ascii=False, indent=1))
         except Exception:
             log.exception("dump failed")
@@ -268,7 +228,6 @@ class Clock:
         return t
 
     def estimate(self, t: Track) -> None:
-        self.titles(t)
         minutes, src = estimate.explicit_minutes(t.text), "stated by you"
         url = str(self.cfg("decisions_url", "https://api.openai.com/v1/decisions") or "")
         if minutes is None and url:
@@ -286,26 +245,6 @@ class Clock:
                 if t.eta_src == "default":
                     t.eta, t.eta_src = minutes * 60, src
                     t.next_check = t.start + t.eta
-
-    def titles(self, t: Track) -> None:
-        """Short human names through Hermes's own title generator (auxiliary.title_generation)."""
-        try:
-            from agent.title_generator import generate_title
-        except Exception:
-            return
-        for c, goal in zip(list(t.children), t.goals):
-            try:
-                title = generate_title(goal, timeout=15)
-            except Exception as exc:
-                log.info("delegation-clock: title failed: %s", exc)
-                continue
-            log.info("delegation-clock: title %r -> %r", goal[:60], title)
-            if title:
-                c.label = _short(title.strip().strip('"«»'), 40)
-                with self.lock:
-                    for r in self.history.get(t.chat or "", []):
-                        if r["id"] == f"{t.did}:{t.children.index(c)}":
-                            r["label"] = c.label
 
     def sample(self, t: Track, item: dict, now: float) -> None:
         acts = item.get("children_activity") or []
@@ -390,103 +329,20 @@ class Clock:
             log.exception("delegation-clock: heartbeat sync failed")
 
     def fallback(self, parent: str, now: float) -> None:
-        """The parent could not be woken: the board already shows it red; stay quiet in chat."""
+        """The parent could not be woken: stay quiet in chat (hermes-subagent-board shows it red)."""
         self.wakes.pop(parent, None)
         log.info("delegation-clock: could not wake %s", parent)
 
     def notify(self, chat: Optional[str], text: str) -> None:
         token = self.secret("TELEGRAM_BOT_TOKEN")
-        if chat and token:
-            board.Telegram(token).text(chat, text)
-
-    # ---- board -----------------------------------------------------------------------------------
-    def replies(self, now: float) -> bool:
-        """Mark when the answer for a finished subagent actually reached the chat (delivery_obligations)."""
-        from hermes_constants import get_hermes_home
-        window = float(self.cfg("reply_window_min", 15)) * 60
-        pending = [r for rows in self.history.values() for r in rows if r.get("reply") is None and r.get("key")]
-        if not pending:
-            return False
-        changed = False
+        if not (chat and token):
+            return
+        body = {"chat_id": chat, "text": text, "link_preview_options": {"is_disabled": True}}
         try:
-            db = sqlite3.connect(f"file:{get_hermes_home() / 'state.db'}?mode=ro", uri=True, timeout=2)
-            try:
-                for r in pending:
-                    row = db.execute("select min(ts) from (select created_at ts from delivery_obligations where "
-                                     "session_key=? and state='delivered' and created_at between ? and ? union all "
-                                     "select timestamp from messages where session_id=? and role='assistant' and "
-                                     "content like 'MEDIA:%' and timestamp between ? and ?)",
-                                     (r["key"], r["end"] - 15, r["end"] + window,
-                                      r.get("parent") or "", r["end"] - 15, r["end"] + window)).fetchone()
-                    if row and row[0]:
-                        r["reply"], changed = float(row[0]), True
-                    elif now - r["end"] > window:
-                        r["reply"], changed = 0, True
-            finally:
-                db.close()
+            urlopen(Request(f"https://api.telegram.org/bot{token}/sendMessage", json.dumps(body).encode(),
+                            {"Content-Type": "application/json"}), timeout=20).read()
         except Exception:
-            log.exception("delegation-clock: reply lookup failed")
-        return changed
-
-    def refresh_boards(self, now: float) -> None:
-        if not self.cfg("board", True):
-            return
-        token = self.secret("TELEGRAM_BOT_TOKEN")
-        if not token:
-            return
-        tg = board.Telegram(token, str(self.cfg("language", "en")))
-        dirty = self.replies(now)
-        with self.lock:
-            live: dict[str, list[Track]] = {}
-            for t in self.tracks.values():
-                if t.chat and t.status in ("running", "attention"):
-                    live.setdefault(t.chat, []).append(t)
-            chats = set(live) | {c for c, rows in self.history.items() if rows}
-            rows_by = {c: (self.rows(live.get(c, []), now) + self.done_rows(self.history.get(c, []))) for c in chats}
-        limit = int(self.cfg("board_rows", 6))
-        pin = bool(self.cfg("pin", True))
-        html = hashlib.sha1(board.widget_html(tg.lang).encode()).hexdigest()[:12]
-        for chat, rows in rows_by.items():
-            data = board.widget_data(rows[:limit], now)
-            entry = self.boards.get(chat)
-            if entry and entry.get("html") != html:  # the page changed (update, language): re-send it
-                tg.remove(chat, entry["mid"])
-                self.boards.pop(chat, None)
-                entry = None
-            if entry and self.sent_data.get(chat) == data:
-                continue
-            try:
-                if entry is None:
-                    self.boards[chat] = {"mid": tg.send_widget(chat, data, pin), "html": html}
-                    dirty = True
-                elif not tg.edit_widget(chat, entry["mid"], data):
-                    self.boards.pop(chat, None)
-                    dirty = True
-                    continue
-                self.sent_data[chat] = data
-            except Exception:
-                log.exception("delegation-clock: widget failed")
-        if dirty:
-            self.save()
-
-    @staticmethod
-    def done_rows(history: list) -> list[dict]:
-        out = []
-        for r in sorted(history, key=lambda x: x["end"], reverse=True):
-            out.append({"label": r["label"], "start": r["start"], "end": r["end"], "status": r["status"],
-                        "elapsed": r["end"] - r["start"], "eta": r["eta"], "warn": "", "reply": r.get("reply")})
-        return out
-
-    def rows(self, tracks: list, now: float) -> list[dict]:
-        out = []
-        hang_alert = float(self.cfg("hang_alert_min", 10)) * 60
-        for t in sorted(tracks, key=lambda x: x.start, reverse=True):
-            for c in t.children:
-                hang = c.tool and now - c.tool_since > hang_alert and t.status in ("running", "attention")
-                out.append({"label": c.label, "start": t.start, "end": None, "reply": None, "status": t.status,
-                            "elapsed": (t.ended or now) - t.start, "eta": t.eta,
-                            "warn": self.t()["hang"].format(tool=c.tool, n=round((now - c.tool_since) / 60)) if hang else ""})
-        return out
+            log.exception("delegation-clock: notify failed")
 
     def t(self) -> dict:
         return strings(str(self.cfg("language", "en")))

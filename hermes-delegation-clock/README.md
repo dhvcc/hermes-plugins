@@ -15,14 +15,10 @@ Without it, an agent that runs `delegate_task` in the background forgets the tas
 
   The check answers `[SILENT]`, so the user sees nothing. The agent writes to the user only if it stopped a worker, needs a decision, or the result will be much later than promised.
 - **Last-resort stop.** A worker at 3× its ETA with no progress is stopped, and the user gets one line about it.
-- **Telegram board.** One pinned [widget](https://core.telegram.org/bots/api#sendwidget) shows the last six subagents and is edited in place, not re-sent:
-  - running ones have a progress ring against their ETA, with a red ring once overdue;
-  - finished ones show start–end and how long they took;
-  - each finished one shows whether the answer reached the chat. If it didn't, it reads "no reply" in red.
 
-  The board works in private chats only (a Telegram limitation). Everything else works on any platform.
+For a live view of the subagents in Telegram, add [hermes-subagent-board](../hermes-subagent-board). It picks up the ETAs and the "needs attention" state from this plugin.
 
-Everything runs on native Hermes pieces: the async delegation registry, the session heartbeat, the title generator, plugin hooks and a tool. Nothing in Hermes is patched.
+Everything runs on native Hermes pieces: the async delegation registry, the session heartbeat, plugin hooks and a tool. Nothing in Hermes is patched.
 
 ## Install
 
@@ -39,7 +35,7 @@ plugins:
     hermes-delegation-clock:
       allow_gateway_injection: true
       settings:
-        language: en            # board language: en | ru
+        language: en            # language of the stop notice: en | ru
 ```
 
 Restart the gateway.
@@ -50,17 +46,12 @@ All settings go under `plugins.entries.hermes-delegation-clock.settings`.
 
 | Key | Default | Meaning |
 |---|---|---|
-| `language` | `en` | Board and notice language (`en`, `ru`) |
+| `language` | `en` | Language of the stop notice (`en`, `ru`) |
 | `default_eta_min` | `15` | ETA when none is stated and no estimate is available |
 | `hang_alert_min` | `10` | Minutes in one command before it counts as stuck |
 | `kill_factor` | `3` | Stop a silent worker at this multiple of its ETA |
 | `decisions_url` | OpenAI Decisions API | Set to `""` to disable estimates |
 | `api_key_env` | `OPENAI_API_KEY` | Env var holding the key for `decisions_url` |
 | `decisions_model` | `gpt-6-luna` | Model for the estimate |
-| `board` | `true` | Telegram board on/off |
-| `board_rows` | `6` | Rows on the board |
-| `board_every_s` | `60` | Board refresh interval |
-| `pin` | `true` | Pin the board |
-| `reply_window_min` | `15` | How long after a finish to wait for the answer before showing "no reply" |
 
 Logs go to `<profile>/logs/delegation-clock.log`, and current state goes to `logs/delegation-clock-state.json`.

@@ -1,0 +1,9 @@
+name: hermes-subagent-board
+version: 0.1.0
+manifest_version: 2
+api_version: 1
+kind: standalone
+author: dhvcc
+license: MIT
+description: A pinned Telegram widget with your last background subagents, edited in place. Running ones show progress, finished ones show how long they took and whether the answer reached the chat.
+tags: [delegation, subagents, telegram, widget]

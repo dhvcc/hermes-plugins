@@ -10,7 +10,8 @@ hermes plugins enable <plugin>
 | Plugin | What it does |
 |---|---|
 | [hermes-smart-router](hermes-smart-router) | Per-turn routing between Luna and Sol on the ChatGPT/Codex subscription. Price- and cache-aware, 30–40% cheaper than Sol-only. |
-| [hermes-delegation-clock](hermes-delegation-clock) | Time awareness and ownership of background subagents: deadlines, silent wake-ups, last-resort stop, and a live Telegram board. |
+| [hermes-delegation-clock](hermes-delegation-clock) | Time awareness and ownership of background subagents: deadlines, silent wake-ups, last-resort stop. |
+| [hermes-subagent-board](hermes-subagent-board) | A pinned Telegram widget with your last subagents: progress, duration, and whether the answer reached the chat. |
 | [hermes-telegram-markdown](hermes-telegram-markdown) | Deterministic Markdown cleanup for Telegram rich messages: tables, dividers, lists and `<placeholders>` that Telegram would otherwise mangle. |
 
 Each plugin's folder has its own setup and settings.

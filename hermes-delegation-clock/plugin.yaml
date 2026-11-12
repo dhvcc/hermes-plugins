@@ -5,8 +5,8 @@ api_version: 1
 kind: standalone
 author: dhvcc
 license: MIT
-description: Time awareness and delegation accountability. Clock and running subagents in every turn, deadline-driven wakes through the native session heartbeat, a last-resort stop, and a live subagent board in Telegram.
-tags: [delegation, time, telegram]
+description: Time awareness and delegation accountability. Clock and running subagents in every turn, deadline-driven silent wakes through the native session heartbeat, and a last-resort stop.
+tags: [delegation, time, subagents]
 provides_hooks:
   - pre_llm_call
 provides_tools:

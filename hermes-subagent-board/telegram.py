@@ -1,4 +1,4 @@
-"""Subagent board: one pinned Telegram widget per chat, edited in place."""
+"""Telegram side of the board: widget page, compact chat_data, Bot API calls."""
 from __future__ import annotations
 
 import json
@@ -73,6 +73,3 @@ class Telegram:
     def remove(self, chat_id: str, message_id: int) -> None:
         self._call("unpinChatMessage", {"chat_id": chat_id, "message_id": message_id})
         self._call("deleteMessage", {"chat_id": chat_id, "message_id": message_id})
-
-    def text(self, chat_id: str, text: str) -> None:
-        self._call("sendMessage", {"chat_id": chat_id, "text": text, "link_preview_options": {"is_disabled": True}})
