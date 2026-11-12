@@ -1,0 +1,9 @@
+name: hermes-telegram-generative-ui
+version: 0.1.0
+manifest_version: 2
+api_version: 1
+kind: standalone
+author: dhvcc
+license: MIT
+description: The agent draws charts, tables and status cards right in the Telegram chat as live widgets, checks them on a screenshot first, and falls back to an image for big reports.
+tags: [telegram, widget, ui, charts]

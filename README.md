@@ -14,6 +14,7 @@ hermes plugins enable <plugin>
 | [hermes-subagent-widget](hermes-subagent-widget) | A pinned Telegram widget with your last subagents. |
 | [hermes-telegram-markdown-preprocessor](hermes-telegram-markdown-preprocessor) | Fixes Markdown that Telegram would break: tables, lists, `<placeholders>`. |
 | [hermes-offline-status](hermes-offline-status) | One silent "restarting" message instead of Hermes' shutdown and online pings. |
+| [hermes-telegram-generative-ui](hermes-telegram-generative-ui) | The agent draws charts, tables and cards in the chat as Telegram widgets. |
 
 Installed the router from the old `dhvcc/hermes-smart-router` path? Reinstall it once:
 
