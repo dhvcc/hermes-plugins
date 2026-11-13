@@ -247,10 +247,16 @@ class Widget:
                 if entry is None:
                     self.boards[chat] = {"mid": tg.send_widget(chat, data, pin), "html": html}
                     dirty = True
-                elif not tg.edit_widget(chat, entry["mid"], data):
-                    self.boards.pop(chat, None)
-                    dirty = True
-                    continue
+                else:
+                    ok = tg.edit_widget(chat, entry["mid"], data)
+                    if ok is None:  # network hiccup: keep the pinned widget, retry next tick
+                        continue
+                    if not ok:
+                        log.info("subagent-widget: widget %s gone, sending a new one", entry["mid"])
+                        tg.remove(chat, entry["mid"])
+                        self.boards.pop(chat, None)
+                        dirty = True
+                        continue
                 self.sent[chat] = data
             except Exception:
                 log.exception("subagent-widget: widget failed")

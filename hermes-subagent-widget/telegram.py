@@ -66,9 +66,15 @@ class Telegram:
             self._call("pinChatMessage", {"chat_id": chat_id, "message_id": mid, "disable_notification": True})
         return mid
 
-    def edit_widget(self, chat_id: str, message_id: int, data: str) -> bool:
+    def edit_widget(self, chat_id: str, message_id: int, data: str) -> Optional[bool]:
+        """True: edited. False: the message is gone, send a new one. None: transient failure, retry later."""
         res = self._call("editMessageWidgetData", {"chat_id": chat_id, "message_id": message_id, "chat_data": data})
-        return bool(res.get("ok")) or "not modified" in str(res.get("description", ""))
+        desc = str(res.get("description", ""))
+        if res.get("ok") or "not modified" in desc:
+            return True
+        if res.get("error_code") == 400 and ("not found" in desc or "can't be edited" in desc or "MESSAGE_ID_INVALID" in desc):
+            return False
+        return None
 
     def remove(self, chat_id: str, message_id: int) -> None:
         self._call("unpinChatMessage", {"chat_id": chat_id, "message_id": message_id})
