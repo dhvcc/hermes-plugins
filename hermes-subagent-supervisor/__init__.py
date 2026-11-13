@@ -3,7 +3,7 @@ import logging
 import os
 from pathlib import Path
 
-from .supervisor import Supervisor, guard_output
+from .supervisor import Supervisor
 
 log = logging.getLogger("hermes_subagent_supervisor")
 
@@ -65,7 +65,6 @@ def register(ctx):
     sup = Supervisor(ctx.get_config, _secret)
     sup.inject = lambda text, key: ctx.inject_message(text, session_key=key)
     ctx.register_hook("pre_llm_call", sup.on_turn)
-    ctx.register_hook("transform_llm_output", lambda **kw: guard_output(sup, **kw))
     ctx.register_tool(name="subagent_deadline", toolset="delegation", schema=DEADLINE_SCHEMA,
                       handler=sup.deadline, description=DEADLINE_SCHEMA["description"], emoji="⏰")
     ctx.on_unload(sup.stop.set)

@@ -7,7 +7,6 @@ restart interrupts background delegations anyway.
 from __future__ import annotations
 
 import json
-import re
 import logging
 import threading
 import time
@@ -73,7 +72,6 @@ class Supervisor:
         self.last_turn: dict[str, float] = {}
         self.first_turn: dict[str, float] = {}
         self.wakes: dict[str, float] = {}
-        self.wake_turns: set[str] = set()
         self.thread: Optional[threading.Thread] = None
         self.stop = threading.Event()
         self.inject: Optional[Callable[[str, str], bool]] = None
@@ -89,11 +87,8 @@ class Supervisor:
         return default if value is None else value
 
     # ---- hook: clock and subagents in every turn -------------------------------------------------
-    def on_turn(self, session_id: str = "", parent_session_id: str = "", platform: str = "", turn_id: str = "",
-                user_message: Any = None, **_: Any):
+    def on_turn(self, session_id: str = "", parent_session_id: str = "", platform: str = "", **_: Any):
         self.ensure_thread()
-        if turn_id and isinstance(user_message, str) and HB_MARK in user_message[:300]:
-            self.wake_turns.add(str(turn_id))
         now = time.time()
         lines = [f"[clock] Now {datetime.now().astimezone().strftime('%a %Y-%m-%d %H:%M %Z')}."]
         sid = session_id or ""
@@ -364,22 +359,3 @@ def _human(seconds: float) -> str:
 def _short(text: str, n: int) -> str:
     text = " ".join(str(text).split())
     return text if len(text) <= n else text[: n - 1] + "…"
-
-
-HANDOFF = re.compile(r"^#{1,3} (Goal|Constraints & Preferences|Completed Actions|Active State|Blocked|Key Decisions|"
-                     r"Resolved Questions|Relevant Files|Last Dropped Turns|Critical Context)\s*$", re.M)
-
-
-def guard_output(sup: "Supervisor", response_text: str = "", turn_id: str = "", **_: Any) -> Optional[str]:
-    """Wake-up turns stay quiet unless the model has one short thing to say, and Hermes' internal
-    compaction handoff never reaches the chat as a reply."""
-    text = response_text or ""
-    wake = str(turn_id) in sup.wake_turns
-    sup.wake_turns.discard(str(turn_id))
-    if len(set(HANDOFF.findall(text))) >= 3:
-        log.warning("subagent-supervisor: dropped a compaction handoff sent as a reply (%d chars)", len(text))
-        return "[SILENT]"
-    if wake and len(text) > 400:
-        log.warning("subagent-supervisor: dropped a %d-char reply to a wake-up", len(text))
-        return "[SILENT]"
-    return None
